@@ -1,54 +1,28 @@
-# React + TypeScript + Vite
+# McNeilly Financial Group App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern financial planning and projection tool built with React and TypeScript, designed to help users visualize long-term investment growth and make informed financial decisions.
 
-Currently, two official plugins are available:
+## Features
+- Investment growth projections
+- Inflation-adjusted vs. raw calculations
+- Interactive chart visualization
+- Export to PDF, CSV, and print-ready reports
+- Email report functionality
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- React
+- TypeScript
+- Chart.js
+- Tailwind CSS / SCSS
+- Node.js / Express (email + export handling)
 
-## Expanding the ESLint configuration
+## Overview
+This application was developed as part of a financial services platform, with a strong focus on usability, clarity, and real-world application.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The goal was to create a tool that translates complex financial data into an intuitive and accessible user experience.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Status
+Active development — refining UI, performance, and export features.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Portfolio
+[constance.design](http://constance.design)
