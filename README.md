@@ -14,7 +14,7 @@ A modern financial planning and projection tool built with React and TypeScript,
 - TypeScript
 - Chart.js
 - Tailwind CSS / SCSS
-- Node.js / Express (email + export handling)
+- Node.js / Express
 
 ## Overview
 This application was developed as part of a financial services platform, with a strong focus on usability, clarity, and real-world application.
@@ -22,7 +22,10 @@ This application was developed as part of a financial services platform, with a 
 The goal was to create a tool that translates complex financial data into an intuitive and accessible user experience.
 
 ## Status
-Active development — refining UI, performance, and export features.
+Active development: refining UI, performance, and export features.
+
+## Live Demo
+[View the app](http://mcneilly-financial-group.vercel.app)
 
 ## Portfolio
 [constance.design](http://constance.design)
