@@ -92,7 +92,7 @@ const PermanentInsurance: React.FC = () => (
       </div>
 
       <p className="leading-relaxed">
-        Our advisors will help you evaluate your budget and long-term goals to determine the best
+        We will help you evaluate your budget and long-term goals to determine the best
         permanent insurance product for your situation. Whether you&apos;re planning your legacy or
         safeguarding your family&apos;s future, we&apos;re here to guide you every step of the way.
       </p>

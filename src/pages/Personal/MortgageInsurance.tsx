@@ -85,7 +85,7 @@ const MortgageInsurance: React.FC = () => (
 
       <p className="leading-relaxed">
         Choosing the right mortgage protection strategy can make a lasting difference in your
-        family&apos;s financial security. Our advisors can help you compare options and make an
+        family&apos;s financial security. We can help you compare options and make an
         informed choice that balances flexibility, cost, and control.
       </p>
     </div>

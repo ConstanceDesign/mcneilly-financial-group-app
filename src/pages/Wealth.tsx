@@ -24,12 +24,11 @@ const Wealth: React.FC = () => {
             A guaranteed investment vehicle with a fixed interest rate and guaranteed return of principal at maturity.
           </p>
           <p className="mt-3 text-sm font-semibold text-[#2f7a2e]">RISK: CDIC-insured up to $100,000</p>
-          <p className="mt-1 text-sm font-semibold text-[#2f7a2e]">TAX: Taxable on interest earned</p>
         </>
       ),
     },
     {
-      title: 'Bonds',
+      title: 'ETF’s',
       content: (
         <p className="leading-relaxed">
           Fixed-income investments where you lend money to a government or corporation in exchange for regular interest

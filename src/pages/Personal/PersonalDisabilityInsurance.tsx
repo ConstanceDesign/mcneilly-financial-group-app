@@ -87,7 +87,7 @@ const PersonalDisabilityInsurance: React.FC = () => (
         </div>
         <p className="text-sm sm:text-base text-[#0f5028] font-medium leading-relaxed">
           Disability insurance can be tailored to your profession, budget, and risk tolerance. Work
-          with an advisor to find a protection plan that fits your income and lifestyle.
+          with us to find a protection plan that fits your income and lifestyle.
         </p>
       </div>
     </div>

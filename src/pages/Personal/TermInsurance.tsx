@@ -85,7 +85,7 @@ const TermInsurance: React.FC = () => (
         <div className="flex items-center gap-2 mb-2">
           <FaLightbulb className="text-[#4b9328]" aria-hidden="true" />
           <span className="text-xs font-semibold tracking-wide uppercase text-[#0f5028]">
-            Strategy Tip
+            Let us help you
           </span>
         </div>
         <p className="text-sm sm:text-base text-[#0f5028] font-medium leading-relaxed">
