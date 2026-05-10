@@ -2,7 +2,6 @@ import React, { useMemo, useRef, useState, ReactNode } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import heroImage from '../../images/personal-hero.jpg';
 
-// Import content components (only internal content)
 import CriticalIllness from './CriticalIllness';
 import MortgageInsurance from './MortgageInsurance';
 import TermInsurance from './TermInsurance';
@@ -12,7 +11,6 @@ import PersonalHealthInsurance from './PersonalHealthInsurance';
 
 type TabKey = 'critical' | 'mortgage' | 'term' | 'permanent' | 'disability' | 'health';
 
-// ✅ No icons (aligned with Links + Business)
 const tabs: { id: TabKey; label: string; icon: ReactNode }[] = [
   { id: 'critical', label: 'Critical Illness', icon: null },
   { id: 'mortgage', label: 'Mortgage', icon: null },
@@ -45,11 +43,8 @@ const fadeNoMotion = {
 
 const Personal: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabKey>('critical');
-
-  // Reduce motion
   const reduceMotion = useReducedMotion();
 
-  // Refs for keyboard navigation between tabs (ArrowLeft / ArrowRight / Home / End)
   const tabRefs = useRef<Record<TabKey, HTMLButtonElement | null>>({
     critical: null,
     mortgage: null,
@@ -69,6 +64,7 @@ const Personal: React.FC = () => {
     if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft' && e.key !== 'Home' && e.key !== 'End') return;
 
     e.preventDefault();
+
     const currentIndex = orderedIds.indexOf(activeTab);
 
     if (e.key === 'Home') {
@@ -87,19 +83,19 @@ const Personal: React.FC = () => {
     const dir = e.key === 'ArrowRight' ? 1 : -1;
     const nextIndex = (currentIndex + dir + orderedIds.length) % orderedIds.length;
     const nextId = orderedIds[nextIndex];
+
     setActiveTab(nextId);
     focusTab(nextId);
   };
 
-  // 2026 surface system (aligned with Contact + Business)
   const pageBg = 'bg-[#f4f2ec]';
 
   const softCard =
-    'rounded-2xl border border-black/10 bg-white/70 backdrop-blur-sm ' +
-    'shadow-[0_14px_42px_rgba(0,0,0,0.08)] ' +
-    'p-5 sm:p-6 lg:p-7';
+    'rounded-xl border border-black/10 bg-white/60 backdrop-blur-sm shadow-sm ' +
+    'p-5 sm:p-6 h-full';
 
-  // Tabs — match Links/Business
+  const h2 = 'font-sans text-2xl font-semibold tracking-tight text-[#0f5028]';
+
   const tabBase =
     'inline-flex items-center justify-center rounded-full border-2 px-4 py-2 ' +
     'text-[11px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.14em] ' +
@@ -107,34 +103,39 @@ const Personal: React.FC = () => {
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0f5028]/25';
 
   const tabActive =
-    'bg-[#2f7a2e] text-white border-[#2f7a2e] shadow-sm ' +
-    'hover:bg-[#3a8b34] hover:border-[#3a8b34] hover:scale-[1.02]';
+    'bg-[#2f7a2e] text-white border-[#2f7a2e] shadow-sm hover:bg-[#3a8b34] hover:border-[#3a8b34]';
 
   const tabIdle =
-    'bg-white/80 text-[#0f5028] border-[#2f7a2e]/35 ' +
-    'hover:bg-white hover:border-[#2f7a2e]/55 hover:scale-[1.02]';
+    'bg-white/80 text-[#0f5028] border-[#2f7a2e]/35 hover:bg-white hover:border-[#2f7a2e]/55';
 
-  // Motion
   const cardIn = reduceMotion
-    ? undefined
+    ? {}
     : {
         initial: { opacity: 0, y: 14 },
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true, amount: 0.2 },
-        transition: { duration: 0.5, ease: 'easeOut' },
+        transition: { duration: 0.55, ease: 'easeOut' as const },
       };
+
+  const colIn = (delay = 0) =>
+    reduceMotion
+      ? {}
+      : {
+          initial: { opacity: 0, y: 10 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.2 },
+          transition: { duration: 0.45, ease: 'easeOut' as const, delay },
+        };
 
   return (
     <div className={`min-h-screen ${pageBg} text-[#1f2937] font-inter`}>
-      {/* Skip link */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:bg-white focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg focus:z-50"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:bg-white/90 focus:px-4 focus:py-2 focus:rounded-xs focus:shadow-lg focus:z-50"
       >
         Skip to main content
       </a>
 
-      {/* HERO — Contact model */}
       <section aria-label="Personal page hero" className="relative">
         <div className="relative overflow-hidden">
           <img
@@ -157,7 +158,6 @@ const Personal: React.FC = () => {
             decoding="async"
           />
 
-          {/* Premium wash */}
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,242,236,0.96),rgba(244,242,236,0.84),rgba(15,80,40,0.08))]"
@@ -166,19 +166,15 @@ const Personal: React.FC = () => {
             aria-hidden="true"
             className="absolute inset-0 bg-[radial-gradient(circle_at_82%_38%,rgba(0,0,0,0.12),transparent_56%)]"
           />
-
-          {/* Top vignette */}
           <div
             aria-hidden="true"
             className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.14),transparent)]"
           />
 
-          {/* Content */}
           <div className="absolute inset-0">
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-full">
               <div className="h-full flex items-center">
                 <div className="relative -translate-y-3 sm:-translate-y-6 lg:-translate-y-4">
-                  {/* Mobile “glass” pad */}
                   <div className="rounded-2xl bg-white/35 backdrop-blur-sm border border-black/5 px-4 py-4 sm:p-0 sm:bg-transparent sm:backdrop-blur-0 sm:border-0">
                     <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
                       Personal Coverage • Protection • Planning
@@ -190,11 +186,17 @@ const Personal: React.FC = () => {
                       <span className="whitespace-nowrap">Insurance Options</span>
                     </h1>
 
-                    <p className="mt-3 text-[16px] sm:text-[16px] text-[#1f2937]/80 leading-relaxed max-w-[44ch]">
-                      Coordinated coverage designed to protect income,
-                      <br className="hidden sm:block" />
-                      home, and long-term stability through every season of life.
+                    <p className="mt-3 text-[16px] sm:text-[16px] text-[#1f2937]/80 leading-relaxed max-w-[52ch]">
+                      Coordinated coverage designed to protect income, home, and long-term stability through every season of
+                      life.
                     </p>
+
+                    <a
+                      href="#main-content"
+                      className="sr-only focus:not-sr-only focus:inline-flex focus:mt-4 focus:bg-white/85 focus:px-3 focus:py-2 focus:rounded-xs focus:outline-none focus:ring-2 focus:ring-[#0f5028]/30"
+                    >
+                      Skip to main content
+                    </a>
                   </div>
                 </div>
               </div>
@@ -202,37 +204,34 @@ const Personal: React.FC = () => {
           </div>
         </div>
 
-        {/* Fade into panel */}
         <div className="h-10 sm:h-12 bg-[linear-gradient(to_bottom,rgba(244,242,236,0.0),rgba(244,242,236,1))]" />
       </section>
 
-      {/* MAIN — overlap panel (Contact model) */}
-      <main id="main-content" className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 md:pb-14">
+      <main id="main-content" className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13">
         <div
           className="
-            -mt-9 sm:-mt-14 lg:-mt-20
-            rounded-[22px]
+            -mt-14 sm:-mt-16 lg:-mt-20
+            rounded-2xl
             border border-black/10
-            bg-white/78
+            bg-white/75
             backdrop-blur-md
             shadow-[0_22px_70px_rgba(0,0,0,0.10)]
-            p-4 sm:p-6 lg:p-8
+            p-5 sm:p-6 lg:p-7
           "
         >
-          <motion.section {...(cardIn || {})} className="grid gap-6 sm:gap-7">
-            {/* Tabs */}
-            <section className={softCard}>
-              <header className="text-center mb-6 sm:mb-8">
-                <h2 className="font-sans text-[1.55rem] sm:text-2xl font-semibold tracking-tight text-[#0f5028]">
-                  Explore coverage options
-                </h2>
-                <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/70 leading-relaxed max-w-[68ch] mx-auto">
+          <motion.section {...cardIn} className="grid gap-5 lg:gap-6">
+            <motion.article {...colIn(0)} className={softCard}>
+              <header className="text-center">
+                <h2 className={h2}>Explore coverage options</h2>
+                <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed max-w-[68ch] mx-auto">
                   Select a category to view details. Use Arrow keys to move between tabs.
                 </p>
               </header>
 
+              <div className="mt-5 h-px w-full bg-black/10" />
+
               <div
-                className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4"
+                className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4"
                 role="tablist"
                 aria-label="Personal insurance categories"
                 onKeyDown={onTabKeyDown}
@@ -255,17 +254,14 @@ const Personal: React.FC = () => {
                       tabIndex={isActive ? 0 : -1}
                       className={`${tabBase} ${isActive ? tabActive : tabIdle}`}
                     >
-                      <span className="text-center leading-tight">
-                        <span className="block">{tab.label}</span>
-                      </span>
+                      <span className="text-center leading-tight">{tab.label}</span>
                     </button>
                   );
                 })}
               </div>
-            </section>
+            </motion.article>
 
-            {/* Content */}
-            <section className={softCard}>
+            <motion.article {...colIn(0.06)} className={softCard}>
               <AnimatePresence mode="wait">
                 <motion.section
                   key={activeTab}
@@ -283,7 +279,7 @@ const Personal: React.FC = () => {
                   </div>
                 </motion.section>
               </AnimatePresence>
-            </section>
+            </motion.article>
           </motion.section>
         </div>
       </main>

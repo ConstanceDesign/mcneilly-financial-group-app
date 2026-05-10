@@ -28,7 +28,7 @@ const Wealth: React.FC = () => {
       ),
     },
     {
-      title: 'ETF’s',
+      title: 'ETFs',
       content: (
         <p className="leading-relaxed">
           Fixed-income investments where you lend money to a government or corporation in exchange for regular interest
@@ -92,51 +92,46 @@ const Wealth: React.FC = () => {
     },
   ];
 
-  // Motion
   const reduceMotion = useReducedMotion();
 
   const cardIn = reduceMotion
-    ? undefined
+    ? {}
     : {
         initial: { opacity: 0, y: 14 },
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true, amount: 0.2 },
-        transition: { duration: 0.55, ease: 'easeOut' },
+        transition: { duration: 0.55, ease: 'easeOut' as const },
       };
 
   const colIn = (delay = 0) =>
     reduceMotion
-      ? undefined
+      ? {}
       : {
           initial: { opacity: 0, y: 10 },
           whileInView: { opacity: 1, y: 0 },
           viewport: { once: true, amount: 0.2 },
-          transition: { duration: 0.45, ease: 'easeOut', delay },
+          transition: { duration: 0.45, ease: 'easeOut' as const, delay },
         };
 
-  // 2026 surface system (matches Contact)
   const pageBg = 'bg-[#f4f2ec]';
 
   const softCard =
-    'rounded-2xl border border-black/10 bg-white/70 backdrop-blur-sm ' +
-    'shadow-[0_14px_42px_rgba(0,0,0,0.08)] ' +
-    'p-5 sm:p-6 lg:p-7';
+    'rounded-xl border border-black/10 bg-white/60 backdrop-blur-sm shadow-sm ' +
+    'p-5 sm:p-6 h-full';
 
   const h2 = 'font-sans text-2xl font-semibold tracking-tight text-[#0f5028]';
 
   const ctaBtn =
     'btn inline-flex items-center justify-center gap-2 ' +
-    'w-full sm:w-auto ' +
-    'px-5 py-3 rounded-xs ' +
+    'px-4 py-2 rounded-xs ' +
     'bg-[#2f7a2e] hover:bg-[#3a8b34] ' +
-    'text-white font-bold uppercase tracking-wide ' +
+    'text-white text-sm font-bold uppercase tracking-wide ' +
     'shadow-sm hover:shadow-md transition ' +
     'hover:shadow-[0_10px_22px_rgba(15,80,40,0.18)] ' +
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0f5028]/25';
 
   return (
     <div className={`min-h-screen ${pageBg} text-[#1f2937] font-inter`}>
-      {/* HERO — aligned with Contact “premium” system */}
       <section aria-label="Wealth page hero" className="relative">
         <div className="relative overflow-hidden">
           <img
@@ -156,7 +151,6 @@ const Wealth: React.FC = () => {
             "
           />
 
-          {/* Readability wash */}
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,242,236,0.96),rgba(244,242,236,0.84),rgba(15,80,40,0.08))]"
@@ -170,12 +164,10 @@ const Wealth: React.FC = () => {
             className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.14),transparent)]"
           />
 
-          {/* Content */}
           <div className="absolute inset-0">
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-full">
               <div className="h-full flex items-center">
                 <div className="relative -translate-y-3 sm:-translate-y-6 lg:-translate-y-4">
-                  {/* Mobile glass pad keeps text premium + readable */}
                   <div className="rounded-2xl bg-white/35 backdrop-blur-sm border border-black/5 px-4 py-4 sm:p-0 sm:bg-transparent sm:backdrop-blur-0 sm:border-0">
                     <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
                       Saving • Investing • Planning
@@ -205,32 +197,25 @@ const Wealth: React.FC = () => {
           </div>
         </div>
 
-        {/* Soft fade into panel */}
         <div className="h-10 sm:h-12 bg-[linear-gradient(to_bottom,rgba(244,242,236,0.0),rgba(244,242,236,1))]" />
       </section>
 
-      {/* CONTENT — upgraded to match Contact styling */}
-      <main id="main-content" className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 md:pb-14">
-        {/* Overlapping surface panel */}
+      <main id="main-content" className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13">
         <div
           className="
-            -mt-9 sm:-mt-14 lg:-mt-20
-            rounded-[22px]
+            -mt-14 sm:-mt-16 lg:-mt-20
+            rounded-2xl
             border border-black/10
-            bg-white/78
+            bg-white/75
             backdrop-blur-md
             shadow-[0_22px_70px_rgba(0,0,0,0.10)]
-            p-4 sm:p-6 lg:p-8
+            p-5 sm:p-6 lg:p-7
           "
         >
-          <motion.section
-            {...(cardIn || {})}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 lg:gap-10 xl:gap-12 items-start"
-          >
-            {/* LEFT */}
-            <motion.article {...(colIn(0) || {})} className={softCard}>
+          <motion.section {...cardIn} className="grid gap-5 lg:gap-6 xl:grid-cols-12 items-stretch">
+            <motion.article {...colIn(0)} className={`${softCard} xl:col-span-6`}>
               <LeadParagraph>
-                Saving is the foundation of financial security. At McNeilly Financial Group, we emphasize thoughtful
+                Saving is the foundation of financial security. <br />At McNeilly Financial Group, we emphasize thoughtful
                 investing to protect your future, preserve capital, and grow wealth over time.
               </LeadParagraph>
 
@@ -255,8 +240,7 @@ const Wealth: React.FC = () => {
               </ul>
             </motion.article>
 
-            {/* RIGHT */}
-            <motion.article {...(colIn(0.06) || {})} className={softCard}>
+            <motion.article {...colIn(0.06)} className={`${softCard} xl:col-span-6`}>
               <header>
                 <h2 className={h2}>Our Investment Solutions Include:</h2>
                 <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
@@ -325,15 +309,10 @@ const Wealth: React.FC = () => {
                 mind through clarity, communication, and ongoing support.
               </p>
 
-              {/* CTA */}
               <div className="mt-6">
-                <button
-                  onClick={handleContactClick}
-                  className={ctaBtn}
-                  aria-label="Contact us for a free consultation"
-                >
-                  <FaComments size={18} aria-hidden="true" />
-                  Free Consultation
+                <button onClick={handleContactClick} className={ctaBtn} aria-label="Contact us for a free consultation">
+                  <FaComments aria-hidden="true" />
+                  FREE CONSULTATION
                 </button>
               </div>
             </motion.article>

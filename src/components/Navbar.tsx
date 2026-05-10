@@ -93,7 +93,7 @@ const Navbar: React.FC = () => {
                         {/* active underline */}
                         {isActive && (
                           <span
-                            className="absolute -bottom-1 left-0 h-0.5 w-full bg-[#8cbe3f]"
+                            className="absolute -bottom-0.5 left-0 h-0.5 w-full bg-[#8cbe3f]"
                             aria-hidden="true"
                           />
                         )}

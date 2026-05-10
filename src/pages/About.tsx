@@ -14,15 +14,14 @@ const About: React.FC = () => {
   const reduceMotion = useReducedMotion();
 
   const cardIn = reduceMotion
-    ? undefined
+    ? {}
     : {
         initial: { opacity: 0, y: 14 },
         whileInView: { opacity: 1, y: 0 },
         viewport: { once: true, amount: 0.2 },
-        transition: { duration: 0.5, ease: 'easeOut' },
+        transition: { duration: 0.5, ease: 'easeOut' as const },
       };
 
-  // 2026 surface system (aligned with Contact)
   const pageBg = 'bg-[#f4f2ec]';
 
   const softCard =
@@ -31,9 +30,9 @@ const About: React.FC = () => {
 
   const ctaBtn =
     'btn inline-flex items-center justify-center gap-2 ' +
-    'px-5 py-3 rounded-xs ' +
+    'px-4 py-2 rounded-xs ' +
     'bg-[#2f7a2e] hover:bg-[#3a8b34] ' +
-    'text-white font-bold uppercase tracking-wide ' +
+    'text-white text-sm font-bold uppercase tracking-wide ' +
     'shadow-sm hover:shadow-md ' +
     'transition ' +
     'hover:shadow-[0_10px_22px_rgba(15,80,40,0.18)] ' +
@@ -41,7 +40,6 @@ const About: React.FC = () => {
 
   return (
     <div className={`min-h-screen ${pageBg} text-[#1f2937] font-inter`}>
-      {/* HERO — Desktop locked; Tablet/Mobile art direction + premium rhythm */}
       <section aria-label="Contact page hero" className="relative">
         <div className="relative overflow-hidden">
           <picture>
@@ -68,7 +66,6 @@ const About: React.FC = () => {
             />
           </picture>
 
-          {/* Premium wash: strong left readability + softer right falloff */}
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,242,236,0.96),rgba(244,242,236,0.84),rgba(15,80,40,0.08))]"
@@ -78,17 +75,14 @@ const About: React.FC = () => {
             className="absolute inset-0 bg-[radial-gradient(circle_at_82%_38%,rgba(0,0,0,0.12),transparent_56%)]"
           />
 
-          {/* Subtle top vignette so hero “tucks under” the nav nicely */}
           <div
             aria-hidden="true"
             className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.14),transparent)]"
           />
 
-          {/* Content */}
           <div className="absolute inset-0">
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-full">
               <div className="h-full flex items-center">
-                {/* Mobile gets a soft “glass” pad so text never fights the image */}
                 <div className="relative -translate-y-3 sm:-translate-y-6 lg:-translate-y-4">
                   <div className="rounded-2xl bg-white/35 backdrop-blur-sm border border-black/5 px-4 py-4 sm:p-0 sm:bg-transparent sm:backdrop-blur-0 sm:border-0">
                     <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
@@ -102,12 +96,12 @@ const About: React.FC = () => {
                     </h1>
 
                     <p className="mt-3 text-[16px] sm:text-[16px] text-[#1f2937]/80 leading-relaxed max-w-[44ch]">
-                     Disciplined planning that protects capital, and supports your lifestyle
-                     at every stage of your financial journey.
+                      Disciplined planning that protects capital, and supports your lifestyle
+                      at every stage of your financial journey.
                     </p>
 
                     <a
-                      href="#main-content"
+                      href="#main"
                       className="sr-only focus:not-sr-only focus:inline-flex focus:mt-4 focus:bg-white/85 focus:px-3 focus:py-2 focus:rounded-xs focus:outline-none focus:ring-2 focus:ring-[#0f5028]/30"
                     >
                       Skip to main content
@@ -119,11 +113,9 @@ const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Soft fade into the panel area */}
         <div className="h-10 sm:h-12 bg-[linear-gradient(to_bottom,rgba(244,242,236,0.0),rgba(244,242,236,1))]" />
       </section>
 
-      {/* MAIN — overlap panel (matches Contact/Links) */}
       <main id="main" className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13">
         <div
           className="
@@ -133,12 +125,11 @@ const About: React.FC = () => {
             bg-white/75
             backdrop-blur-md
             shadow-[0_22px_70px_rgba(0,0,0,0.10)]
-            p-5 sm:p-7 lg:p-8
+            p-5 sm:p-6 lg:p-7
           "
         >
-          <motion.section {...(cardIn || {})} className="grid gap-7 xl:gap-9 xl:grid-cols-12 items-start">
-            {/* LEFT */}
-            <section className={`${softCard} xl:col-span-7`}>
+          <motion.section {...cardIn} className="grid gap-5 lg:gap-6 xl:grid-cols-12 items-stretch">
+            <section className={`${softCard} xl:col-span-7 h-full`}>
               <article className="text-[16px] md:text-[17px] leading-relaxed text-[#1f2937]/80 space-y-6">
                 <LeadParagraph>
                   At McNeilly Financial Group, our philosophy is grounded in conservative, disciplined
@@ -149,10 +140,7 @@ const About: React.FC = () => {
                 <div className="h-px w-full bg-black/10" />
 
                 <section aria-labelledby="investment-approach">
-                  <h2
-                    id="investment-approach"
-                    className="text-2xl font-sans font-semibold tracking-tight text-[#0f5028]"
-                  >
+                  <h2 id="investment-approach" className="text-2xl font-sans font-semibold tracking-tight text-[#0f5028]">
                     Investment Approach
                   </h2>
                   <p className="mt-3">
@@ -165,15 +153,12 @@ const About: React.FC = () => {
                 </section>
 
                 <section aria-labelledby="holistic-planning">
-                  <h2
-                    id="holistic-planning"
-                    className="text-2xl font-sans font-semibold tracking-tight text-[#0f5028]"
-                  >
+                  <h2 id="holistic-planning" className="text-2xl font-sans font-semibold tracking-tight text-[#0f5028]">
                     Holistic Financial Planning
                   </h2>
                   <p className="mt-3">
                     <span className="font-semibold text-[#102019]">Strategies that reflect real life.</span>{' '}
-                    Your financial world doesn’t exist in silos. We integrate:
+                    We integrate:
                   </p>
                   <ul className="mt-3 list-disc pl-6 space-y-2">
                     <li>Investment &amp; retirement planning</li>
@@ -184,10 +169,7 @@ const About: React.FC = () => {
                 </section>
 
                 <section aria-labelledby="tax-structuring">
-                  <h2
-                    id="tax-structuring"
-                    className="text-2xl font-sans font-semibold tracking-tight text-[#0f5028]"
-                  >
+                  <h2 id="tax-structuring" className="text-2xl font-sans font-semibold tracking-tight text-[#0f5028]">
                     Advanced Tax &amp; Structuring
                   </h2>
                   <p className="mt-3">
@@ -200,8 +182,7 @@ const About: React.FC = () => {
               </article>
             </section>
 
-            {/* RIGHT */}
-            <section className={`${softCard} xl:col-span-5`}>
+            <section className={`${softCard} xl:col-span-5 h-full`}>
               <article className="text-[16px] md:text-[17px] leading-relaxed text-[#1f2937]/80 space-y-6">
                 <section aria-labelledby="oversight">
                   <h2 id="oversight" className="text-2xl font-sans font-semibold tracking-tight text-[#0f5028]">
@@ -250,7 +231,7 @@ const About: React.FC = () => {
                   </p>
                 </section>
 
-                <div className="pt-2">
+                <div className="pt-1">
                   <button onClick={handleContactClick} className={ctaBtn} aria-label="Contact us for a free consultation">
                     <FaComments aria-hidden="true" />
                     FREE CONSULTATION

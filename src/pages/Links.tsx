@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
-  FaUniversity,
-  FaChartLine,
-  FaInfoCircle,
   FaExternalLinkAlt,
-  FaBuilding,
-  FaGlobeAmericas,
-  FaSearchDollar,
-  FaBookOpen,
-  FaGraduationCap,
-  FaMoneyCheckAlt,
 } from 'react-icons/fa';
 import heroImage from '../images/links-hero.jpg';
 
@@ -62,29 +53,6 @@ const fadeInNoMotion = {
   exit: { opacity: 0 },
 };
 
-// (kept, but no longer used for button icons — leaving here harmlessly in case you want it later)
-const getLinkIcon = (tab: TabId, name: string): React.ReactNode => {
-  const lower = name.toLowerCase();
-
-  if (tab === 'mutual') {
-    if (lower.includes('fidelity') || lower.includes('franklin')) return <FaUniversity className="text-sm" aria-hidden="true" />;
-    if (lower.includes('dynamic') || lower.includes('mackenzie')) return <FaChartLine className="text-sm" aria-hidden="true" />;
-    return <FaMoneyCheckAlt className="text-sm" aria-hidden="true" />;
-  }
-
-  if (tab === 'industry') return <FaBuilding className="text-sm" aria-hidden="true" />;
-
-  if (tab === 'financial') {
-    if (lower.includes('library') || lower.includes('learning')) return <FaBookOpen className="text-sm" aria-hidden="true" />;
-    if (lower.includes('morningstar') || lower.includes('globefund')) return <FaSearchDollar className="text-sm" aria-hidden="true" />;
-    if (lower.includes('revenue') || lower.includes('canada')) return <FaGlobeAmericas className="text-sm" aria-hidden="true" />;
-    return <FaInfoCircle className="text-sm" aria-hidden="true" />;
-  }
-
-  if (lower.includes('yahoo')) return <FaGlobeAmericas className="text-sm" aria-hidden="true" />;
-  return <FaGraduationCap className="text-sm" aria-hidden="true" />;
-};
-
 const Links: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('mutual');
   const [announcement, setAnnouncement] = useState('');
@@ -112,17 +80,13 @@ const Links: React.FC = () => {
     if (newIndex !== currentIndex) setActiveTab(tabs[newIndex].id);
   };
 
-  // 2026 surface system (matches Contact + Wealth)
   const pageBg = 'bg-[#f4f2ec]';
 
-  const softPanel =
-    'rounded-[22px] border border-black/10 bg-white/78 backdrop-blur-md ' +
-    'shadow-[0_22px_70px_rgba(0,0,0,0.10)]';
+  const softCard =
+    'rounded-xl border border-black/10 bg-white/60 backdrop-blur-sm shadow-sm ' +
+    'p-5 sm:p-6 h-full';
 
-  const sectionCard =
-    'rounded-2xl border border-black/10 bg-white/70 backdrop-blur-sm ' +
-    'shadow-[0_14px_42px_rgba(0,0,0,0.08)] ' +
-    'p-5 sm:p-6 lg:p-7';
+  const h2 = 'font-sans text-2xl font-semibold tracking-tight text-[#0f5028]';
 
   const tabBase =
     'inline-flex items-center justify-center rounded-full border-2 px-4 py-2 ' +
@@ -136,8 +100,6 @@ const Links: React.FC = () => {
   const tabIdle =
     'bg-white/80 text-[#0f5028] border-[#2f7a2e]/35 hover:bg-white hover:border-[#2f7a2e]/55';
 
-  // ✅ Link buttons: no per-link icon, keep ONLY outgoing icon
-  // ✅ Allow wrapping to 2 lines when needed (no truncation)
   const linkCard =
     'relative group w-full ' +
     'rounded-xl border border-black/10 bg-white/70 backdrop-blur-sm ' +
@@ -148,8 +110,26 @@ const Links: React.FC = () => {
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0f5028]/25';
 
   const linkTitle =
-    'text-[14px] sm:text-[15px] md:text-[16px] font-semibold text-[#102019] tracking-[0.02em] ' +
-    'leading-snug';
+    'text-[14px] sm:text-[15px] md:text-[16px] font-semibold text-[#102019] tracking-[0.02em] leading-snug';
+
+  const cardIn = shouldReduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 14 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.2 },
+        transition: { duration: 0.55, ease: 'easeOut' as const },
+      };
+
+  const colIn = (delay = 0) =>
+    shouldReduceMotion
+      ? {}
+      : {
+          initial: { opacity: 0, y: 10 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.2 },
+          transition: { duration: 0.45, ease: 'easeOut' as const, delay },
+        };
 
   const renderLinksGrid = (items: { name: string; url: string }[], cols: string) => (
     <div className={`grid ${cols} gap-4 sm:gap-5`}>
@@ -164,12 +144,8 @@ const Links: React.FC = () => {
           className={linkCard}
           aria-label={`Visit ${link.name} website. Opens in a new tab.`}
         >
-          {/* ✅ No truncation; wraps to 2 lines if needed */}
-          <span className={`${linkTitle} pr-2`}>
-            {link.name}
-          </span>
+          <span className={`${linkTitle} pr-2`}>{link.name}</span>
 
-          {/* ✅ Keep ONLY outgoing icon */}
           <span className="flex items-center flex-shrink-0 text-[#0f5028]">
             <FaExternalLinkAlt className="text-xs opacity-80 group-hover:opacity-100" aria-hidden="true" />
             <span className="sr-only">(opens in a new tab)</span>
@@ -183,7 +159,6 @@ const Links: React.FC = () => {
 
   return (
     <div className={`min-h-screen ${pageBg} text-[#1f2937] font-inter`}>
-      {/* Skip link for keyboard users */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:bg-white/90 focus:px-4 focus:py-2 focus:rounded-xs focus:shadow-lg focus:z-50"
@@ -191,13 +166,11 @@ const Links: React.FC = () => {
         Skip to main content
       </a>
 
-      {/* Live region for tab announcements (screen readers) */}
       <div aria-live="polite" className="sr-only">
         {announcement}
       </div>
 
       <header>
-        {/* HERO — remove the “glass pad” that caused the weird blur behind the H1 */}
         <section aria-label="Links page hero" className="relative">
           <div className="relative overflow-hidden">
             <img
@@ -234,20 +207,29 @@ const Links: React.FC = () => {
               <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-full">
                 <div className="h-full flex items-center">
                   <div className="relative -translate-y-3 sm:-translate-y-6 lg:-translate-y-4">
-                    <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
-                      Research • Education • Tools
-                    </p>
+                    <div className="rounded-2xl bg-white/35 backdrop-blur-sm border border-black/5 px-4 py-4 sm:p-0 sm:bg-transparent sm:backdrop-blur-0 sm:border-0">
+                      <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
+                        Research • Education • Tools
+                      </p>
 
-                    <h1 className="mt-2.5 sm:mt-3 font-sans font-medium tracking-tight text-[#102019] leading-[1.05] text-[2.05rem] sm:text-5xl lg:text-6xl">
-                      Trusted Financial
-                      <br />
-                      <span className="whitespace-nowrap">Resource Links</span>
-                    </h1>
+                      <h1 className="mt-2.5 sm:mt-3 font-sans font-medium tracking-tight text-[#102019] leading-[1.05] text-[2.05rem] sm:text-5xl lg:text-6xl">
+                        Trusted Financial
+                        <br />
+                        <span className="whitespace-nowrap">Resource Links</span>
+                      </h1>
 
-                    <p className="mt-3 text-[16px] text-[#1f2937]/80 leading-relaxed max-w-[56ch]">
-                      A curated collection of reliable sites to help you compare options, learn fundamentals,
-                      and stay informed.
-                    </p>
+                      <p className="mt-3 text-[16px] sm:text-[16px] text-[#1f2937]/80 leading-relaxed max-w-[52ch]">
+                        A curated collection of reliable sites to help you compare options, learn fundamentals, and stay
+                        informed.
+                      </p>
+
+                      <a
+                        href="#main-content"
+                        className="sr-only focus:not-sr-only focus:inline-flex focus:mt-4 focus:bg-white/85 focus:px-3 focus:py-2 focus:rounded-xs focus:outline-none focus:ring-2 focus:ring-[#0f5028]/30"
+                      >
+                        Skip to main content
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -261,51 +243,58 @@ const Links: React.FC = () => {
       <main
         id="main-content"
         tabIndex={-1}
-        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 md:pb-14"
+        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
       >
-        {/* Overlapping surface panel */}
-        <div className={`-mt-9 sm:-mt-14 lg:-mt-20 p-4 sm:p-6 lg:p-8 ${softPanel}`}>
-          <section aria-label="Financial resource categories and links">
-            {/* Tabs — ✅ no icons */}
-                        <header className="text-center mb-6 sm:mb-8">
-  <h2 className="font-sans text-[1.55rem] sm:text-2xl font-semibold tracking-tight text-[#0f5028]">
-    Explore resources by category
-  </h2>
-  <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/70 leading-relaxed max-w-[68ch] mx-auto">
- Select a category to view details. Use Arrow keys to move between tabs.
-  </p>
-</header>
-            <div
-              className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4 mb-6 sm:mb-8"
-              role="tablist"
-              aria-label="Financial resource categories"
-            >
-              {tabs.map((tab) => {
-                const isActive = activeTab === tab.id;
+        <div
+          className="
+            -mt-14 sm:-mt-16 lg:-mt-20
+            rounded-2xl
+            border border-black/10
+            bg-white/75
+            backdrop-blur-md
+            shadow-[0_22px_70px_rgba(0,0,0,0.10)]
+            p-5 sm:p-6 lg:p-7
+          "
+        >
+          <motion.section {...cardIn} className="grid gap-5 lg:gap-6" aria-label="Financial resource categories and links">
+            <motion.article {...colIn(0)} className={softCard}>
+              <header className="text-center">
+                <h2 className={h2}>Explore resources by category</h2>
+                <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed max-w-[68ch] mx-auto">
+                  Select a category to view details. Use Arrow keys to move between tabs.
+                </p>
+              </header>
 
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveTab(tab.id)}
-                    onKeyDown={(e) => handleTabKeyDown(e, tab.id)}
-                    role="tab"
-                    aria-selected={isActive}
-                    aria-controls={`${tab.id}-panel`}
-                    id={`${tab.id}-tab`}
-                    tabIndex={isActive ? 0 : -1}
-                    className={`${tabBase} ${isActive ? tabActive : tabIdle}`}
-                  >
-                    <span className="text-center leading-tight">
-                      {/* ✅ wrap to 2 lines if needed */}
-                      <span className="block">{tab.label}</span>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+              <div className="mt-5 h-px w-full bg-black/10" />
 
-            {/* Tab Content */}
+              <div
+                className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4"
+                role="tablist"
+                aria-label="Financial resource categories"
+              >
+                {tabs.map((tab) => {
+                  const isActive = activeTab === tab.id;
+
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setActiveTab(tab.id)}
+                      onKeyDown={(e) => handleTabKeyDown(e, tab.id)}
+                      role="tab"
+                      aria-selected={isActive}
+                      aria-controls={`${tab.id}-panel`}
+                      id={`${tab.id}-tab`}
+                      tabIndex={isActive ? 0 : -1}
+                      className={`${tabBase} ${isActive ? tabActive : tabIdle}`}
+                    >
+                      <span className="text-center leading-tight">{tab.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.article>
+
             <AnimatePresence mode="wait">
               {activeTab === 'mutual' && (
                 <motion.section
@@ -318,16 +307,12 @@ const Links: React.FC = () => {
                   exit="exit"
                   variants={variants}
                   transition={{ duration: 0.35 }}
-                  className={sectionCard}
+                  className={softCard}
                 >
-                  <div className="mb-5">
-                    <h2 className="font-sans text-2xl font-semibold tracking-tight text-[#0f5028]">
-                      Mutual Fund Companies
-                    </h2>
-                    <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
-                      Explore products, performance, and investor education directly from leading fund providers.
-                    </p>
-                  </div>
+                  <h2 className={h2}>Mutual Fund Companies</h2>
+                  <p className="mt-2 mb-5 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
+                    Explore products, performance, and investor education directly from leading fund providers.
+                  </p>
 
                   {renderLinksGrid(tabData.mutual, 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4')}
                 </motion.section>
@@ -344,17 +329,13 @@ const Links: React.FC = () => {
                   exit="exit"
                   variants={variants}
                   transition={{ duration: 0.35 }}
-                  className={sectionCard}
+                  className={softCard}
                 >
-                  <div className="mb-5">
-                    <h2 className="font-sans text-2xl font-semibold tracking-tight text-[#0f5028]">
-                      Industry Associations
-                    </h2>
-                    <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
-                      Professional associations and regulatory bodies that support advisors and uphold standards in Canadian
-                      financial services.
-                    </p>
-                  </div>
+                  <h2 className={h2}>Industry Associations</h2>
+                  <p className="mt-2 mb-5 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
+                    Professional associations and regulatory bodies that support advisors and uphold standards in Canadian
+                    financial services.
+                  </p>
 
                   {renderLinksGrid(tabData.industry, 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3')}
                 </motion.section>
@@ -371,16 +352,12 @@ const Links: React.FC = () => {
                   exit="exit"
                   variants={variants}
                   transition={{ duration: 0.35 }}
-                  className={sectionCard}
+                  className={softCard}
                 >
-                  <div className="mb-5">
-                    <h2 className="font-sans text-2xl font-semibold tracking-tight text-[#0f5028]">
-                      Financial Information
-                    </h2>
-                    <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
-                      Independent research tools, data libraries, and education hubs to support informed decisions.
-                    </p>
-                  </div>
+                  <h2 className={h2}>Financial Information</h2>
+                  <p className="mt-2 mb-5 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
+                    Independent research tools, data libraries, and education hubs to support informed decisions.
+                  </p>
 
                   {renderLinksGrid(tabData.financial, 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4')}
                 </motion.section>
@@ -397,22 +374,18 @@ const Links: React.FC = () => {
                   exit="exit"
                   variants={variants}
                   transition={{ duration: 0.35 }}
-                  className={sectionCard}
+                  className={softCard}
                 >
-                  <div className="mb-5">
-                    <h2 className="font-sans text-2xl font-semibold tracking-tight text-[#0f5028]">
-                      Personal Finance
-                    </h2>
-                    <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
-                      Consumer-friendly tools for market news, quotes, and everyday money education.
-                    </p>
-                  </div>
+                  <h2 className={h2}>Personal Finance</h2>
+                  <p className="mt-2 mb-5 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
+                    Consumer-friendly tools for market news, quotes, and everyday money education.
+                  </p>
 
                   {renderLinksGrid(tabData.personal, 'grid-cols-1 sm:grid-cols-2')}
                 </motion.section>
               )}
             </AnimatePresence>
-          </section>
+          </motion.section>
         </div>
       </main>
     </div>
