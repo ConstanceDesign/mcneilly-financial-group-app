@@ -80,7 +80,7 @@ const Navbar: React.FC = () => {
                         {label}
 
                         {/* hover underline */}
-                        <span
+                        {/* <span
                           className="
                             absolute -bottom-1 left-0 h-0.5 w-0
                             bg-[#8cbe3f]
@@ -88,7 +88,7 @@ const Navbar: React.FC = () => {
                             group-hover:w-full
                           "
                           aria-hidden="true"
-                        />
+                        /> */}
 
                         {/* active underline */}
                         {isActive && (

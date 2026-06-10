@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import heroDesktop from '../images/contact-hero-desktop.jpg';
+import heroDesktop from '../images/about-hero-desktop.jpg';
 import heroTablet from '../images/contact-hero-tablet.jpg';
 import heroMobile from '../images/contact-hero-mobile.jpg';
 import LeadParagraph from 'components/LeadParagraph';
