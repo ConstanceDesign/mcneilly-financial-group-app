@@ -10,7 +10,6 @@ import {
   FaGraduationCap,
   FaComments,
   FaCalculator,
-  FaArrowRight,
   FaCheckCircle,
 } from 'react-icons/fa';
 import heroImage from '../images/home-hero.jpg';
@@ -152,7 +151,7 @@ const Home: React.FC = () => {
                 </p>
 
                 <h1 className="mt-3 font-sans text-[2.05rem] sm:text-5xl lg:text-6xl font-semibold tracking-tight text-[#102019] leading-[1.05]">
-                  Plan with clarity.
+                  Plan with purpose.
                   <br />
                   Protect what matters.
                   <br />
@@ -309,14 +308,6 @@ const Home: React.FC = () => {
                             <p id={descId} className="text-[15px] text-[#1f2937]/75 leading-relaxed">
                               {service.desc}
                             </p>
-
-                            <div className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#0f5028]/90">
-                              <span className="opacity-80 group-hover:opacity-100 transition-opacity">Learn more</span>
-                              <FaArrowRight
-                                className="opacity-70 group-hover:translate-x-0.5 transition-transform"
-                                aria-hidden="true"
-                              />
-                            </div>
                           </article>
                         </Reveal>
                       );
