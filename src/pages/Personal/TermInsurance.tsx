@@ -89,7 +89,7 @@ const TermInsurance: React.FC = () => (
           </span>
         </div>
         <p className="text-sm sm:text-base text-[#0f5028] font-medium leading-relaxed">
-          Term life insurance works best when combined with a tailored strategy. Let an advisor help
+          Term life insurance works best when combined with a tailored strategy. Let us help
           you craft a plan that balances affordability, flexibility, and peace of mind across all
           stages of life.
         </p>
