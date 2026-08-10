@@ -72,7 +72,7 @@ const PrivacyPolicy: React.FC = () => {
                   href="mailto:pmcneilly@sterlingmutuals.com"
                   className="text-[#4b9328] font-semibold hover:underline focus:outline-none focus:ring-2 focus:ring-[#4b9328]"
                 >
-                  info@mcneillyfinancialgroup.com
+                  pmcneilly@sterlingmutals.com
                 </a>
               </div>
               <div>
@@ -87,7 +87,7 @@ const PrivacyPolicy: React.FC = () => {
             </address>
           </section>
 
-          <p className="text-sm ">Last updated: April 30, 2025</p>
+          <p className="text-sm ">Last updated: August 9, 2026</p>
         </div>
       </div>
     </main>
