@@ -40,10 +40,13 @@ const toNumber = (val: string) => {
 };
 
 const formatCAD = (n: number) =>
-  new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(n);
+  new Intl.NumberFormat('en-CA', {
+    style: 'currency',
+    currency: 'CAD',
+  }).format(n);
 
 // ✅ Ensure this file exists in /public/images/...
-const LOGO_URL = '/images/mcneillyfinancialgroup-logo.png';
+// const LOGO_URL = '/images/mcneillyfinancialgroup-logo.png';
 
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
@@ -75,9 +78,17 @@ const FinancialCalculator: React.FC = () => {
 
   const printOnlyReportCSS = `
     @page { margin: 12mm; }
+
     @media print {
-      body * { visibility: hidden !important; }
-      .print-area, .print-area * { visibility: visible !important; }
+      body * {
+        visibility: hidden !important;
+      }
+
+      .print-area,
+      .print-area * {
+        visibility: visible !important;
+      }
+
       .print-area {
         position: absolute !important;
         left: 0 !important;
@@ -99,8 +110,14 @@ const FinancialCalculator: React.FC = () => {
 
   /* ---------- CONTRIBUTION LIMIT (simple estimate) ---------- */
   const contributionLimit = useMemo(() => {
-    if (accountType === 'RRSP') return Math.min(toNumber(income) * 0.18, 32490);
-    if (accountType === 'FHSA') return 8000;
+    if (accountType === 'RRSP') {
+      return Math.min(toNumber(income) * 0.18, 32490);
+    }
+
+    if (accountType === 'FHSA') {
+      return 8000;
+    }
+
     return 7000;
   }, [accountType, income]);
 
@@ -121,7 +138,10 @@ const FinancialCalculator: React.FC = () => {
     }
 
     const lumpSum = P * Math.pow(1 + r / n, n * t);
-    const contrib = m * ((Math.pow(1 + r / n, n * t) - 1) / (r / n));
+
+    const contrib =
+      m * ((Math.pow(1 + r / n, n * t) - 1) / (r / n));
+
     let total = lumpSum + contrib;
 
     if (adjustForInflation) {
@@ -129,6 +149,7 @@ const FinancialCalculator: React.FC = () => {
     }
 
     const annualEstimate = P + m * 12;
+
     const warn =
       annualEstimate > contributionLimit
         ? `Note: Estimated first-year contributions (${formatCAD(
@@ -154,7 +175,9 @@ const FinancialCalculator: React.FC = () => {
         P * Math.pow(1 + r / n, n * i) +
         m * ((Math.pow(1 + r / n, n * i) - 1) / (r / n));
 
-      const adjusted = adjustForInflation ? fv / Math.pow(1 + DEFAULT_INFLATION, i) : fv;
+      const adjusted = adjustForInflation
+        ? fv / Math.pow(1 + DEFAULT_INFLATION, i)
+        : fv;
 
       labels.push(`Year ${i}`);
       values.push(Number(adjusted.toFixed(2)));
@@ -180,7 +203,7 @@ const FinancialCalculator: React.FC = () => {
   const meta: ProjectionMeta & { projectedValue?: string } = {
     reportTitle: 'Investment Projection Report',
     firmLine: 'McNeilly Financial Group',
-    logoUrl: LOGO_URL,
+    // logoUrl: LOGO_URL,
     preparedFor: clientName || '',
     accountType,
     income: income || '',
@@ -198,6 +221,7 @@ const FinancialCalculator: React.FC = () => {
       alert('Please enter a client name and click Calculate first.');
       return;
     }
+
     if (!sendToEmail.trim() || !isEmail(sendToEmail)) {
       alert('Please enter a valid email address to send the report to.');
       return;
@@ -212,7 +236,9 @@ const FinancialCalculator: React.FC = () => {
 
       const res = await fetch('/api/send-report', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           pdfBase64,
           email: sendToEmail.trim(),
@@ -233,7 +259,10 @@ const FinancialCalculator: React.FC = () => {
 
       setEmailError(null);
       setEmailSent(true);
-      setTimeout(() => setEmailSent(false), 2500);
+
+      setTimeout(() => {
+        setEmailSent(false);
+      }, 2500);
     } catch (err) {
       console.error(err);
       setEmailError('Email failed. Check console + Network tab.');
@@ -270,12 +299,16 @@ const FinancialCalculator: React.FC = () => {
     'inline-flex items-center gap-2 rounded px-4 py-2 text-sm font-bold shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0f5028]/40 disabled:opacity-50 disabled:cursor-not-allowed';
 
   return (
-    <div className="max-w-xl mx-auto space-y-6" aria-label="Investment projection calculator">
+    <div
+      className="max-w-xl mx-auto space-y-6"
+      aria-label="Investment projection calculator"
+    >
       {/* ---------------- FORM CARD ---------------- */}
       <div className="bg-white p-6 rounded shadow border border-[#d4d4d4]">
-        <div className="flex items-center gap-2 mb-3">
-          <FaCalculator className="text-[#4b9328]" aria-hidden="true" />
-          <h3 className="text-xl font-semibold text-[#0f5028]">Registered Investment Calculator</h3>
+        <div className="mb-3">
+          <h3 className="text-xl font-semibold text-[#0f5028]">
+            Registered Investment Calculator
+          </h3>
         </div>
 
         <form
@@ -287,7 +320,10 @@ const FinancialCalculator: React.FC = () => {
         >
           <div className="grid sm:grid-cols-2 gap-4">
             <label className="block">
-              <span className="text-sm font-semibold text-[#0f5028]">Name</span>
+              <span className="text-sm font-semibold text-[#0f5028]">
+                Name
+              </span>
+
               <input
                 className="mt-1 w-full rounded-xs border border-black/25 px-3 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8cbe3f]/40"
                 value={clientName}
@@ -298,7 +334,10 @@ const FinancialCalculator: React.FC = () => {
             </label>
 
             <label className="block">
-              <span className="text-sm font-semibold text-[#0f5028]">Send report to email</span>
+              <span className="text-sm font-semibold text-[#0f5028]">
+                Send report to email
+              </span>
+
               <input
                 className="mt-1 w-full rounded border border-black/25 px-3 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8cbe3f]/40"
                 value={sendToEmail}
@@ -310,11 +349,16 @@ const FinancialCalculator: React.FC = () => {
             </label>
 
             <label className="block">
-              <span className="text-[16px] text-[#1f2937]">Account type</span>
+              <span className="text-[16px] text-[#1f2937]">
+                Account type
+              </span>
+
               <select
                 className="mt-1 w-full rounded border border-black/25 px-3 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8cbe3f]/40"
                 value={accountType}
-                onChange={(e) => setAccountType(e.target.value as AccountType)}
+                onChange={(e) =>
+                  setAccountType(e.target.value as AccountType)
+                }
                 aria-label="Select account type"
               >
                 <option value="RRSP">RRSP</option>
@@ -329,6 +373,7 @@ const FinancialCalculator: React.FC = () => {
               <span className="text-sm font-semibold text-[#0f5028]">
                 Annual income (for RRSP room estimate)
               </span>
+
               <input
                 className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8cbe3f]"
                 value={income}
@@ -341,7 +386,10 @@ const FinancialCalculator: React.FC = () => {
 
           <div className="grid sm:grid-cols-2 gap-4">
             <label className="block">
-              <span className="text-sm font-semibold text-[#0f5028]">Starting amount (CAD)</span>
+              <span className="text-sm font-semibold text-[#0f5028]">
+                Starting amount (CAD)
+              </span>
+
               <input
                 className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8cbe3f]"
                 value={principal}
@@ -352,7 +400,10 @@ const FinancialCalculator: React.FC = () => {
             </label>
 
             <label className="block">
-              <span className="text-sm font-semibold text-[#0f5028]">Monthly contribution (CAD)</span>
+              <span className="text-sm font-semibold text-[#0f5028]">
+                Monthly contribution (CAD)
+              </span>
+
               <input
                 className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8cbe3f]"
                 value={monthly}
@@ -365,7 +416,10 @@ const FinancialCalculator: React.FC = () => {
 
           <div className="grid sm:grid-cols-2 gap-4">
             <label className="block">
-              <span className="text-sm font-semibold text-[#0f5028]">Annual return rate (%)</span>
+              <span className="text-sm font-semibold text-[#0f5028]">
+                Annual return rate (%)
+              </span>
+
               <input
                 className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8cbe3f]"
                 value={rate}
@@ -376,7 +430,10 @@ const FinancialCalculator: React.FC = () => {
             </label>
 
             <label className="block">
-              <span className="text-sm font-semibold text-[#0f5028]">Years to grow</span>
+              <span className="text-sm font-semibold text-[#0f5028]">
+                Years to grow
+              </span>
+
               <input
                 className="mt-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8cbe3f]"
                 value={years}
@@ -391,9 +448,12 @@ const FinancialCalculator: React.FC = () => {
             <input
               type="checkbox"
               checked={adjustForInflation}
-              onChange={(e) => setAdjustForInflation(e.target.checked)}
+              onChange={(e) =>
+                setAdjustForInflation(e.target.checked)
+              }
               className="h-4 w-4 rounded border-gray-300 text-[#4b9328] focus:ring-[#8cbe3f]"
             />
+
             <span className="text-sm text-[#0f5028] font-semibold">
               Adjust for inflation (2%/year)
             </span>
@@ -423,176 +483,269 @@ const FinancialCalculator: React.FC = () => {
       </div>
 
       {/* ---------------- REPORT CARD (PRINT/PDF TARGET) ---------------- */}
-      <div ref={reportRef} className="print-area bg-white p-6 rounded shadow border border-[#d4d4d4]">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <img
-              src={LOGO_URL}
-              alt="McNeilly Financial Group logo"
-              className="h-10 w-auto object-contain"
-              loading="eager"
-            />
-            <div>
-              <h3 className="text-xl font-semibold text-[#0f5028] leading-tight">
-                Registered Investment Report
-              </h3>
+      {hasCalculated && (
+        <div
+          ref={reportRef}
+          className="print-area bg-white p-6 rounded shadow border border-[#d4d4d4]"
+        >
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              {/* <img
+                // src={LOGO_URL}
+                alt="McNeilly Financial Group logo"
+                className="h-10 w-auto object-contain"
+                loading="eager"
+              /> */}
+
+              <div>
+                <h3 className="text-xl font-semibold text-[#0f5028] leading-tight">
+                  Registered Investment Report
+                </h3>
+              </div>
+            </div>
+
+            <div className="text-xs text-slate-600 text-right">
+              <div className="font-semibold text-[#0f5028]">
+                {clientName || '—'}
+              </div>
+
+              <div>{accountType}</div>
             </div>
           </div>
 
-          <div className="text-xs text-slate-600 text-right">
-            <div className="font-semibold text-[#0f5028]">{clientName || '—'}</div>
-            <div>{accountType}</div>
-          </div>
-        </div>
-
-        <div className="mt-4 rounded-lg border border-[#d4d4d4] bg-[#f8f9f7] p-4">
-          <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#0f5028]">
-            <span className="inline-flex items-center gap-2">
-              <FaCheckCircle className="text-[#4b9328] text-sm" aria-hidden="true" />
-              Starting: <strong>{principal ? formatCAD(toNumber(principal)) : '—'}</strong>
-            </span>
-
-            <span className="inline-flex items-center gap-2">
-              <FaCheckCircle className="text-[#4b9328] text-sm" aria-hidden="true" />
-              Monthly: <strong>{monthly ? formatCAD(toNumber(monthly)) : '—'}</strong>
-            </span>
-
-            <span className="inline-flex items-center gap-2">
-              <FaCheckCircle className="text-[#4b9328] text-sm" aria-hidden="true" />
-              Return: <strong>{rate ? `${rate}%` : '—'}</strong>
-            </span>
-
-            <span className="inline-flex items-center gap-2">
-              <FaCheckCircle className="text-[#4b9328] text-sm" aria-hidden="true" />
-              Years: <strong>{years || '—'}</strong>
-            </span>
-
-            {accountType === 'RRSP' && (
+          <div className="mt-4 rounded-lg border border-[#d4d4d4] bg-[#f8f9f7] p-4">
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#0f5028]">
               <span className="inline-flex items-center gap-2">
-                <FaCheckCircle className="text-[#4b9328] text-sm" aria-hidden="true" />
-                Income: <strong>{income ? formatCAD(toNumber(income)) : '—'}</strong>
+                <FaCheckCircle
+                  className="text-[#4b9328] text-sm"
+                  aria-hidden="true"
+                />
+                Starting:{' '}
+                <strong>
+                  {principal
+                    ? formatCAD(toNumber(principal))
+                    : '—'}
+                </strong>
               </span>
-            )}
 
-            <span className="inline-flex items-center gap-2">
-              <FaCheckCircle className="text-[#4b9328] text-sm" aria-hidden="true" />
-              Inflation: <strong>{adjustForInflation ? 'Yes (2%/yr)' : 'No'}</strong>
-            </span>
+              <span className="inline-flex items-center gap-2">
+                <FaCheckCircle
+                  className="text-[#4b9328] text-sm"
+                  aria-hidden="true"
+                />
+                Monthly:{' '}
+                <strong>
+                  {monthly
+                    ? formatCAD(toNumber(monthly))
+                    : '—'}
+                </strong>
+              </span>
+
+              <span className="inline-flex items-center gap-2">
+                <FaCheckCircle
+                  className="text-[#4b9328] text-sm"
+                  aria-hidden="true"
+                />
+                Return:{' '}
+                <strong>{rate ? `${rate}%` : '—'}</strong>
+              </span>
+
+              <span className="inline-flex items-center gap-2">
+                <FaCheckCircle
+                  className="text-[#4b9328] text-sm"
+                  aria-hidden="true"
+                />
+                Years:{' '}
+                <strong>{years || '—'}</strong>
+              </span>
+
+              {accountType === 'RRSP' && (
+                <span className="inline-flex items-center gap-2">
+                  <FaCheckCircle
+                    className="text-[#4b9328] text-sm"
+                    aria-hidden="true"
+                  />
+                  Income:{' '}
+                  <strong>
+                    {income
+                      ? formatCAD(toNumber(income))
+                      : '—'}
+                  </strong>
+                </span>
+              )}
+
+              <span className="inline-flex items-center gap-2">
+                <FaCheckCircle
+                  className="text-[#4b9328] text-sm"
+                  aria-hidden="true"
+                />
+                Inflation:{' '}
+                <strong>
+                  {adjustForInflation
+                    ? 'Yes (2%/yr)'
+                    : 'No'}
+                </strong>
+              </span>
+            </div>
           </div>
-        </div>
 
-        <div className="mt-4 space-y-2">
-          {(result || warning || emailError) ? (
-            <div className="rounded-lg border border-[#d4d4d4] bg-[#f8f9f7] p-4">
-              {result && <p className="text-[#0f5028] font-semibold leading-relaxed">{result}</p>}
-              {warning && <p className="text-sm text-[#0f5028] mt-2 leading-relaxed">{warning}</p>}
-              {emailError && <p className="text-sm text-red-700 mt-2 leading-relaxed">{emailError}</p>}
-            </div>
-          ) : (
-            <div className="rounded-lg border border-[#d4d4d4] bg-[#f8f9f7] p-4 text-sm text-slate-700">
-              Run a calculation above to generate results and the chart.
-            </div>
-          )}
-        </div>
+          <div className="mt-4 space-y-2">
+            {(result || warning || emailError) && (
+              <div className="rounded-lg border border-[#d4d4d4] bg-[#f8f9f7] p-4">
+                {result && (
+                  <p className="text-[#0f5028] font-semibold leading-relaxed">
+                    {result}
+                  </p>
+                )}
 
-        {chartData && (
-          <div className="mt-4 h-[280px] rounded-lg border border-gray-200 bg-white p-3">
-            <Line
-              data={chartData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: true } },
-                scales: {
-                  y: {
-                    ticks: {
-                      callback: (value) => {
-                        const n = Number(value);
-                        return Number.isFinite(n) ? formatCAD(n) : String(value);
+                {warning && (
+                  <p className="text-sm text-[#0f5028] mt-2 leading-relaxed">
+                    {warning}
+                  </p>
+                )}
+
+                {emailError && (
+                  <p className="text-sm text-red-700 mt-2 leading-relaxed">
+                    {emailError}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+
+          {chartData && (
+            <div className="mt-4 h-[280px] rounded-lg border border-gray-200 bg-white p-3">
+              <Line
+                data={chartData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      display: true,
+                    },
+                  },
+                  scales: {
+                    y: {
+                      ticks: {
+                        callback: (value) => {
+                          const n = Number(value);
+
+                          return Number.isFinite(n)
+                            ? formatCAD(n)
+                            : String(value);
+                        },
                       },
                     },
                   },
-                },
-              }}
-            />
-          </div>
-        )}
+                }}
+              />
+            </div>
+          )}
 
-        {/* ✅ Export buttons */}
-        <div data-export-ignore="true" className="mt-5">
-          <div className="flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={() =>
-                handlePrintWrapper({
-                  reportRef,
-                  handlePrint: reactToPrint,
-                  setPrintTriggered,
-                })
-              }
-              disabled={!hasCalculated}
-              className={`${btnBase} bg-white border border-gray-300 hover:bg-gray-50 text-[#0f5028]`}
-              aria-label="Print report"
-            >
-              <FaPrint aria-hidden="true" />
-              Print
-            </button>
+          {/* ✅ Export buttons */}
+          <div
+            data-export-ignore="true"
+            className="mt-5"
+          >
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() =>
+                  handlePrintWrapper({
+                    reportRef,
+                    handlePrint: reactToPrint,
+                    setPrintTriggered,
+                  })
+                }
+                disabled={!hasCalculated}
+                className={`${btnBase} bg-white border border-gray-300 hover:bg-gray-50 text-[#0f5028]`}
+                aria-label="Print report"
+              >
+                <FaPrint aria-hidden="true" />
+                Print
+              </button>
 
-            <button
-              type="button"
-              onClick={async () => {
-                if (!reportRef.current) return;
-                setPdfExported(false);
-                await exportPDF(reportRef.current, meta, 'mcneilly_investment_report.pdf');
-                setPdfExported(true);
-                setTimeout(() => setPdfExported(false), 2500);
-              }}
-              disabled={!hasCalculated}
-              className={`${btnBase} bg-white border border-gray-300 hover:bg-gray-50 text-[#0f5028]`}
-              aria-label="Export PDF"
-            >
-              <FaFilePdf aria-hidden="true" />
-              PDF
-            </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  if (!reportRef.current) {
+                    return;
+                  }
 
-            <button
-              type="button"
-              onClick={() => {
-                setCsvExported(false);
-                exportCSV(chartData, meta, 'mcneilly_investment_projection.csv');
-                setCsvExported(true);
-                setTimeout(() => setCsvExported(false), 2500);
-              }}
-              disabled={!chartData}
-              className={`${btnBase} bg-white border border-gray-300 hover:bg-gray-50 text-[#0f5028]`}
-              aria-label="Export CSV"
-            >
-              <FaFileCsv aria-hidden="true" />
-              CSV
-            </button>
+                  setPdfExported(false);
 
-            <button
-              type="button"
-              onClick={handleEmailReport}
-              disabled={!hasCalculated || isSending}
-              className={`${btnBase} bg-white border border-gray-300 hover:bg-gray-50 text-[#0f5028]`}
-              aria-label="Email report"
-            >
-              <FaEnvelope aria-hidden="true" />
-              {isSending ? 'Sending…' : 'Email'}
-            </button>
-          </div>
+                  await exportPDF(
+                    reportRef.current,
+                    meta,
+                    'mcneilly_investment_report.pdf'
+                  );
 
-          <div className="pt-2">
-            <ExportStatus
-              emailSent={emailSent}
-              pdfExported={pdfExported}
-              csvExported={csvExported}
-              printTriggered={printTriggered}
-            />
+                  setPdfExported(true);
+
+                  setTimeout(() => {
+                    setPdfExported(false);
+                  }, 2500);
+                }}
+                disabled={!hasCalculated}
+                className={`${btnBase} bg-white border border-gray-300 hover:bg-gray-50 text-[#0f5028]`}
+                aria-label="Export PDF"
+              >
+                <FaFilePdf aria-hidden="true" />
+                PDF
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setCsvExported(false);
+
+                  exportCSV(
+                    chartData,
+                    meta,
+                    'mcneilly_investment_projection.csv'
+                  );
+
+                  setCsvExported(true);
+
+                  setTimeout(() => {
+                    setCsvExported(false);
+                  }, 2500);
+                }}
+                disabled={!chartData}
+                className={`${btnBase} bg-white border border-gray-300 hover:bg-gray-50 text-[#0f5028]`}
+                aria-label="Export CSV"
+              >
+                <FaFileCsv aria-hidden="true" />
+                CSV
+              </button>
+
+              <button
+                type="button"
+                onClick={handleEmailReport}
+                disabled={!hasCalculated || isSending}
+                className={`${btnBase} bg-white border border-gray-300 hover:bg-gray-50 text-[#0f5028]`}
+                aria-label="Email report"
+              >
+                <FaEnvelope aria-hidden="true" />
+
+                {isSending
+                  ? 'Sending…'
+                  : 'Email'}
+              </button>
+            </div>
+
+            <div className="pt-2">
+              <ExportStatus
+                emailSent={emailSent}
+                pdfExported={pdfExported}
+                csvExported={csvExported}
+                printTriggered={printTriggered}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
