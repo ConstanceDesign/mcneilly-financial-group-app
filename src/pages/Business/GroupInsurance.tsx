@@ -1,13 +1,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaUsers, FaShieldAlt, FaCheckCircle, FaChartLine, FaLightbulb, FaHeartbeat } from 'react-icons/fa';
+import {
+  FaUsers,
+  FaShieldAlt,
+  FaCheckCircle,
+  FaChartLine,
+  FaLightbulb,
+  FaHeartbeat,
+} from 'react-icons/fa';
 
 const reveal = {
   hidden: { opacity: 0, y: 18 },
   visible: { opacity: 1, y: 0 },
 };
 
-const Reveal: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => (
+const Reveal: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => (
   <motion.div
     className={className}
     variants={reveal}
@@ -23,7 +33,7 @@ const Reveal: React.FC<{ children: React.ReactNode; className?: string }> = ({ c
 const GroupInsurance: React.FC = () => {
   return (
     <section aria-labelledby="group-insurance-heading" className="text-[#1f2937]">
-      {/* SECTION 1: Editorial intro (clean + confident) */}
+      {/* SECTION 1: Editorial intro */}
       <Reveal className="grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="lg:col-span-7">
           <div className="inline-flex items-center gap-3">
@@ -31,7 +41,6 @@ const GroupInsurance: React.FC = () => {
               <FaUsers className="text-2xl" />
             </span>
 
-            {/* IMPORTANT: No H1 inside tab content */}
             <h2
               id="group-insurance-heading"
               className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#102019]"
@@ -55,7 +64,9 @@ const GroupInsurance: React.FC = () => {
           <div className="rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] p-5 sm:p-6">
             <div className="flex items-center gap-2">
               <FaChartLine className="text-[#0f5028]/70" aria-hidden="true" />
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-[#102019]/75">Why work with us</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-[#102019]/75">
+                Why work with us
+              </h3>
             </div>
 
             <p className="mt-3 text-sm leading-relaxed text-[#1f2937]/70">
@@ -67,8 +78,11 @@ const GroupInsurance: React.FC = () => {
               <div className="rounded-lg border border-black/10 bg-white/55 p-4">
                 <div className="flex items-center gap-2">
                   <FaHeartbeat className="text-[#0f5028]/60" aria-hidden="true" />
-                  <p className="text-sm font-semibold text-[#102019]">Support your people</p>
+                  <p className="text-sm font-semibold text-[#102019]">
+                    Support your people
+                  </p>
                 </div>
+
                 <p className="mt-2 text-sm text-[#1f2937]/65 leading-relaxed">
                   Benefits help employees feel supported — and reduce turnover risk.
                 </p>
@@ -77,8 +91,11 @@ const GroupInsurance: React.FC = () => {
               <div className="rounded-lg border border-black/10 bg-white/55 p-4">
                 <div className="flex items-center gap-2">
                   <FaShieldAlt className="text-[#0f5028]/60" aria-hidden="true" />
-                  <p className="text-sm font-semibold text-[#102019]">Protect your business</p>
+                  <p className="text-sm font-semibold text-[#102019]">
+                    Protect your business
+                  </p>
                 </div>
+
                 <p className="mt-2 text-sm text-[#1f2937]/65 leading-relaxed">
                   A plan that balances cost control and real coverage strengthens resilience.
                 </p>
@@ -88,15 +105,16 @@ const GroupInsurance: React.FC = () => {
         </div>
       </Reveal>
 
-      {/* Divider */}
       <div className="my-12 h-px bg-black/5" aria-hidden="true" />
 
-      {/* SECTION 2: Benefits (whitespace + clean list) */}
+      {/* SECTION 2: Benefits */}
       <Reveal className="grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="lg:col-span-7">
           <div className="flex items-center gap-2">
             <FaShieldAlt className="text-[#0f5028]/70" aria-hidden="true" />
-            <h3 className="text-2xl font-semibold text-[#102019]">Benefits of Group Coverage</h3>
+            <h3 className="text-2xl font-semibold text-[#102019]">
+              Benefits of Group Coverage
+            </h3>
           </div>
 
           <p className="mt-4 text-sm sm:text-base text-[#1f2937]/70 leading-relaxed">
@@ -121,11 +139,12 @@ const GroupInsurance: React.FC = () => {
         </div>
 
         <div className="lg:col-span-5">
-          {/* Expert Tip (kept — but more editorial, less “boxed UI”) */}
           <div className="rounded-xl border border-[#0f5028]/20 bg-[#f7fbf3] p-6 shadow-sm">
             <div className="flex items-center gap-2">
               <FaLightbulb className="text-[#0f5028]/70" aria-hidden="true" />
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]">Expert tip</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]">
+                Expert tip
+              </p>
             </div>
 
             <p className="mt-3 text-sm sm:text-base text-[#102019]/80 font-medium leading-relaxed">
@@ -133,29 +152,16 @@ const GroupInsurance: React.FC = () => {
               It’s a clear signal of stability, care, and long-term vision.
             </p>
           </div>
-
-          {/* Optional “image placeholder” (swap later with Adobe Stock) */}
-          <figure className="mt-6">
-            <div className="aspect-[16/10] rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] shadow-sm overflow-hidden">
-              <div className="h-full w-full grid place-items-center">
-                <p className="text-xs font-semibold uppercase tracking-widest text-[#1f2937]/45">
-                  Image Placeholder • Team benefits meeting
-                </p>
-              </div>
-            </div>
-            <figcaption className="mt-2 text-xs text-[#1f2937]/55">
-              Optional: add a warm, natural photo (avoid heavy green filters).
-            </figcaption>
-          </figure>
         </div>
       </Reveal>
 
-      {/* Divider */}
       <div className="my-12 h-px bg-black/5" aria-hidden="true" />
 
-      {/* SECTION 3: How it works (simple, classy steps) */}
+      {/* SECTION 3: How it works */}
       <Reveal>
-        <h3 className="text-2xl font-semibold text-[#102019]">How Group Plans Typically Come Together</h3>
+        <h3 className="text-2xl font-semibold text-[#102019]">
+          How Group Plans Typically Come Together
+        </h3>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
@@ -172,9 +178,16 @@ const GroupInsurance: React.FC = () => {
               body: 'We coordinate setup and help ensure the plan evolves as your company grows.',
             },
           ].map((step) => (
-            <div key={step.title} className="rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] p-5">
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]/70">{step.title}</p>
-              <p className="mt-3 text-sm text-[#1f2937]/70 leading-relaxed">{step.body}</p>
+            <div
+              key={step.title}
+              className="rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] p-5"
+            >
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]/70">
+                {step.title}
+              </p>
+              <p className="mt-3 text-sm text-[#1f2937]/70 leading-relaxed">
+                {step.body}
+              </p>
             </div>
           ))}
         </div>

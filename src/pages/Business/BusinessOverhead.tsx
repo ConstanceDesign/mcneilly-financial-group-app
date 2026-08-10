@@ -1,12 +1,21 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaBuilding, FaFileInvoiceDollar, FaCheckCircle, FaChartLine, FaLightbulb } from 'react-icons/fa';
+import {
+  FaBuilding,
+  FaFileInvoiceDollar,
+  FaCheckCircle,
+  FaChartLine,
+  FaLightbulb,
+} from 'react-icons/fa';
 import Reveal from '../../components/motion/Reveal';
 
 const Divider = () => <div className="my-12 h-px bg-black/5" aria-hidden="true" />;
 
-const card = 'rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] shadow-sm';
-const tipCard = 'rounded-xl border border-[#0f5028]/20 bg-[#f7fbf3] shadow-sm';
+const card =
+  'rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] shadow-sm';
+
+const tipCard =
+  'rounded-xl border border-[#0f5028]/20 bg-[#f7fbf3] shadow-sm';
 
 const BusinessOverhead: React.FC = () => {
   return (
@@ -17,16 +26,17 @@ const BusinessOverhead: React.FC = () => {
             <span className="text-[#0f5028]/70" aria-hidden="true">
               <FaBuilding className="text-2xl" />
             </span>
+
             <h2
               id="business-overhead-heading"
               className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#102019]"
             >
-              Business Overhead Expense Insurance
+              Business Overhead Insurance
             </h2>
           </div>
 
           <p className="mt-5 text-base sm:text-[1.05rem] leading-relaxed text-[#1f2937]/75">
-            Business Overhead Expense (BOE) insurance helps keep a business running if the owner becomes unable to work
+            Business Overhead Insurance helps keep a business running if the owner becomes unable to work
             due to illness or injury.
           </p>
 
@@ -38,7 +48,9 @@ const BusinessOverhead: React.FC = () => {
           <div className="mt-8">
             <div className="flex items-center gap-2">
               <FaFileInvoiceDollar className="text-[#0f5028]/70" aria-hidden="true" />
-              <h3 className="text-2xl font-semibold text-[#102019]">Key coverage highlights</h3>
+              <h3 className="text-2xl font-semibold text-[#102019]">
+                Key coverage highlights
+              </h3>
             </div>
 
             <ul className="mt-5 space-y-3 text-[#1f2937]/75">
@@ -67,26 +79,16 @@ const BusinessOverhead: React.FC = () => {
             </div>
 
             <p className="mt-3 text-sm leading-relaxed text-[#1f2937]/70">
-              BOE is most valuable for incorporated professionals, clinic owners, partners, and small business operators.
+              Business Overhead Insurance is most valuable for incorporated professionals, clinic owners, partners, and small business operators.
               Eligible expenses often include commercial rent, utilities, certain wages, property taxes, insurance
               premiums, and contracted services (policy-dependent).
             </p>
 
             <p className="mt-4 text-sm leading-relaxed text-[#1f2937]/70">
-              BOE does not replace personal income and typically excludes inventory, start-up expenses, and cost of goods
+              Business Overhead Insurance does not replace personal income and typically excludes inventory, start-up expenses, and cost of goods
               sold.
             </p>
           </Reveal>
-
-          <figure className="mt-6">
-            <div className={`${card} overflow-hidden`}>
-              <div className="aspect-[16/10] grid place-items-center">
-                <p className="text-xs font-semibold uppercase tracking-widest text-[#1f2937]/45">
-                  Image Placeholder • Business continuity / office
-                </p>
-              </div>
-            </div>
-          </figure>
         </div>
       </Reveal>
 
@@ -94,7 +96,9 @@ const BusinessOverhead: React.FC = () => {
 
       <Reveal variant="left" className="grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="lg:col-span-7">
-          <h3 className="text-2xl font-semibold text-[#102019]">Additional protections to look for</h3>
+          <h3 className="text-2xl font-semibold text-[#102019]">
+            Additional protections to look for
+          </h3>
 
           <div className="mt-6 grid gap-4">
             {[
@@ -119,7 +123,9 @@ const BusinessOverhead: React.FC = () => {
                 transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.05 }}
                 className={`${card} p-5`}
               >
-                <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]/70">{x.t}</p>
+                <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]/70">
+                  {x.t}
+                </p>
                 <p className="mt-3 text-sm text-[#1f2937]/70 leading-relaxed">{x.b}</p>
               </motion.div>
             ))}
@@ -130,7 +136,9 @@ const BusinessOverhead: React.FC = () => {
           <Reveal variant="scale" className={`${tipCard} p-6`}>
             <div className="flex items-center gap-2">
               <FaLightbulb className="text-[#0f5028]/70" aria-hidden="true" />
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]">Advisor tip</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]">
+                Advisor tip
+              </p>
             </div>
 
             <p className="mt-3 text-sm sm:text-base text-[#102019]/80 font-medium leading-relaxed">

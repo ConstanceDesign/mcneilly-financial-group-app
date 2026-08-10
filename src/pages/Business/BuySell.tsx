@@ -1,12 +1,21 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaHandshake, FaBalanceScale, FaCheckCircle, FaFileSignature, FaLightbulb } from 'react-icons/fa';
+import {
+  FaHandshake,
+  FaBalanceScale,
+  FaCheckCircle,
+  FaFileSignature,
+  FaLightbulb,
+} from 'react-icons/fa';
 import Reveal from '../../components/motion/Reveal';
 
 const Divider = () => <div className="my-12 h-px bg-black/5" aria-hidden="true" />;
 
-const card = 'rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] shadow-sm';
-const tipCard = 'rounded-xl border border-[#0f5028]/20 bg-[#f7fbf3] shadow-sm';
+const card =
+  'rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] shadow-sm';
+
+const tipCard =
+  'rounded-xl border border-[#0f5028]/20 bg-[#f7fbf3] shadow-sm';
 
 const BuySell: React.FC = () => {
   return (
@@ -17,7 +26,11 @@ const BuySell: React.FC = () => {
             <span className="text-[#0f5028]/70" aria-hidden="true">
               <FaHandshake className="text-2xl" />
             </span>
-            <h2 id="buy-sell-heading" className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#102019]">
+
+            <h2
+              id="buy-sell-heading"
+              className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#102019]"
+            >
               Funding Buy–Sell Agreements
             </h2>
           </div>
@@ -59,7 +72,9 @@ const BuySell: React.FC = () => {
           <Reveal variant="scale" className={`${card} p-6`}>
             <div className="flex items-center gap-2">
               <FaFileSignature className="text-[#0f5028]/70" aria-hidden="true" />
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-[#102019]/75">How we help</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-[#102019]/75">
+                How we help
+              </h3>
             </div>
 
             <p className="mt-3 text-sm leading-relaxed text-[#1f2937]/70">
@@ -71,7 +86,9 @@ const BuySell: React.FC = () => {
           <Reveal variant="scale" className={`${tipCard} p-6 mt-6`}>
             <div className="flex items-center gap-2">
               <FaLightbulb className="text-[#0f5028]/70" aria-hidden="true" />
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]">Planning tip</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]">
+                Planning tip
+              </p>
             </div>
 
             <p className="mt-3 text-sm sm:text-base text-[#102019]/80 font-medium leading-relaxed">
@@ -79,29 +96,30 @@ const BuySell: React.FC = () => {
               Plan while options are widest.
             </p>
           </Reveal>
-
-          <figure className="mt-6">
-            <div className={`${card} overflow-hidden`}>
-              <div className="aspect-[16/10] grid place-items-center">
-                <p className="text-xs font-semibold uppercase tracking-widest text-[#1f2937]/45">
-                  Image Placeholder • Partner agreement / handshake
-                </p>
-              </div>
-            </div>
-          </figure>
         </div>
       </Reveal>
 
       <Divider />
 
       <Reveal variant="softUp">
-        <h3 className="text-2xl font-semibold text-[#102019]">How a buy–sell plan typically comes together</h3>
+        <h3 className="text-2xl font-semibold text-[#102019]">
+          How a buy–sell plan typically comes together
+        </h3>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
-            { t: 'Define terms', b: 'Owners define triggers, valuation method, and purchase terms with legal counsel.' },
-            { t: 'Select funding', b: 'Insurance amount aligns to valuation approach and ownership structure.' },
-            { t: 'Implement & review', b: 'Policies are placed, beneficiaries aligned, and reviewed as the business grows.' },
+            {
+              t: 'Define terms',
+              b: 'Owners define triggers, valuation method, and purchase terms with legal counsel.',
+            },
+            {
+              t: 'Select funding',
+              b: 'Insurance amount aligns to valuation approach and ownership structure.',
+            },
+            {
+              t: 'Implement & review',
+              b: 'Policies are placed, beneficiaries aligned, and reviewed as the business grows.',
+            },
           ].map((x, i) => (
             <motion.div
               key={x.t}
@@ -111,7 +129,9 @@ const BuySell: React.FC = () => {
               transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.05 }}
               className={`${card} p-5`}
             >
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]/70">{x.t}</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]/70">
+                {x.t}
+              </p>
               <p className="mt-3 text-sm text-[#1f2937]/70 leading-relaxed">{x.b}</p>
             </motion.div>
           ))}

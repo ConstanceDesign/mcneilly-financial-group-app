@@ -6,7 +6,6 @@ import {
   FaChartBar,
   FaInfoCircle,
   FaLightbulb,
-  FaCheckCircle,
 } from 'react-icons/fa';
 import Reveal from '../../components/motion/Reveal';
 
@@ -75,12 +74,13 @@ const DisabilityInsurance: React.FC = () => {
           </div>
         </div>
 
-        {/* Right rail: advisor insight + image placeholder */}
         <div className="lg:col-span-5">
           <Reveal variant="scale" className={`${softCard} p-6`}>
             <div className="flex items-center gap-2">
               <FaLightbulb className="text-[#0f5028]/70" aria-hidden="true" />
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]">Advisor insight</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]">
+                Advisor insight
+              </p>
             </div>
 
             <p className="mt-3 text-sm sm:text-base text-[#102019]/80 font-medium leading-relaxed">
@@ -88,21 +88,6 @@ const DisabilityInsurance: React.FC = () => {
               disability are often higher. The goal is protecting the lifestyle you’ve worked hard to build.
             </p>
           </Reveal>
-
-          <figure className="mt-6">
-            <Reveal variant="fade">
-              <div className={`${card} overflow-hidden`}>
-                <div className="aspect-[16/10] grid place-items-center">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-[#1f2937]/45">
-                    Image Placeholder • Professional returning to work
-                  </p>
-                </div>
-              </div>
-            </Reveal>
-            <figcaption className="mt-2 text-xs text-[#1f2937]/55">
-              Optional: choose warm, natural light — avoid heavy green overlays.
-            </figcaption>
-          </figure>
         </div>
       </Reveal>
 
@@ -129,6 +114,7 @@ const DisabilityInsurance: React.FC = () => {
                 <caption className="sr-only">
                   Disability risk by age, showing male and female percentages.
                 </caption>
+
                 <thead className="bg-[#0f5028] text-white">
                   <tr>
                     <th scope="col" className="py-2.5 px-4 font-semibold uppercase tracking-wide text-xs">
@@ -142,6 +128,7 @@ const DisabilityInsurance: React.FC = () => {
                     </th>
                   </tr>
                 </thead>
+
                 <tbody className="divide-y divide-black/5">
                   {riskRows.map((row) => (
                     <tr key={row.age} className="odd:bg-white even:bg-black/[0.02]">
@@ -157,7 +144,10 @@ const DisabilityInsurance: React.FC = () => {
             </div>
 
             <p className="px-4 pb-4 pt-3 text-xs text-[#1f2937]/55 italic flex items-start gap-2">
-              <FaInfoCircle className="mt-0.5 text-[#0f5028]/55 flex-shrink-0" aria-hidden="true" />
+              <FaInfoCircle
+                className="mt-0.5 text-[#0f5028]/55 flex-shrink-0"
+                aria-hidden="true"
+              />
               <span>
                 Source: 1985 Commissioner&apos;s Disability Table A &amp; CIA 86–92 Aggregate Mortality Table.
                 Illustration only; may not reflect current experience.
@@ -171,16 +161,36 @@ const DisabilityInsurance: React.FC = () => {
 
       {/* SECTION 3: How it’s structured */}
       <Reveal variant="softUp">
-        <h3 className="text-2xl font-semibold text-[#102019]">What to review when comparing policies</h3>
+        <h3 className="text-2xl font-semibold text-[#102019]">
+          What to review when comparing policies
+        </h3>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
-            { t: 'Definition of disability', b: 'Own occupation vs. any occupation — what qualifies for benefits.' },
-            { t: 'Elimination period', b: 'How long you wait before benefits begin (30/60/90 days, etc.).' },
-            { t: 'Benefit duration', b: 'How long benefits can be paid (2 years, 5 years, to age 65, etc.).' },
-            { t: 'Residual benefits', b: 'Support if you return part-time and income is reduced.' },
-            { t: 'Future increase options', b: 'Ability to increase coverage as income grows (without new medicals).' },
-            { t: 'Recurrence provisions', b: 'If you relapse after returning, benefits may resume without restarting.' },
+            {
+              t: 'Definition of disability',
+              b: 'Own occupation vs. any occupation — what qualifies for benefits.',
+            },
+            {
+              t: 'Elimination period',
+              b: 'How long you wait before benefits begin (30/60/90 days, etc.).',
+            },
+            {
+              t: 'Benefit duration',
+              b: 'How long benefits can be paid (2 years, 5 years, to age 65, etc.).',
+            },
+            {
+              t: 'Residual benefits',
+              b: 'Support if you return part-time and income is reduced.',
+            },
+            {
+              t: 'Future increase options',
+              b: 'Ability to increase coverage as income grows (without new medicals).',
+            },
+            {
+              t: 'Recurrence provisions',
+              b: 'If you relapse after returning, benefits may resume without restarting.',
+            },
           ].map((x, i) => (
             <motion.div
               key={x.t}
@@ -190,7 +200,9 @@ const DisabilityInsurance: React.FC = () => {
               transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.04 }}
               className={`${card} p-5`}
             >
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]/70">{x.t}</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]/70">
+                {x.t}
+              </p>
               <p className="mt-3 text-sm text-[#1f2937]/70 leading-relaxed">{x.b}</p>
             </motion.div>
           ))}
