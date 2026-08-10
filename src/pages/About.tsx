@@ -145,7 +145,7 @@ const About: React.FC = () => {
                   </h2>
                   <p className="mt-3">
                     <span className="font-semibold text-[#102019]">
-                      Capital preservation first — sustainable growth always.
+                      Capital preservation first sustainable growth always.
                     </span>{' '}
                     We align each portfolio to your objectives and risk tolerance to help minimize
                     volatility while pursuing long-term returns through changing markets.
@@ -202,8 +202,7 @@ const About: React.FC = () => {
                     Leadership &amp; Collaboration
                   </h2>
                   <p className="mt-3">
-                    <span className="font-semibold text-[#102019]">Your chief financial advisor.</span>{' '}
-                    Led by <span className="font-medium text-[#102019]">Patrick McNeilly, B.A., B. Comm.</span>,
+                    <span className="font-semibold text-[#102019]">Led by Patrick McNeilly, B.A., B. Comm.</span>{' '}
                     we coordinate the moving parts of your financial life and collaborate with accountants,
                     lawyers, and other specialists to deliver integrated, execution-ready plans.
                   </p>
@@ -215,7 +214,7 @@ const About: React.FC = () => {
                   </h2>
                   <p className="mt-3">
                     <span className="font-semibold text-[#102019]">Human, transparent, and accountable.</span>{' '}
-                    Advice should feel clear and actionable—not overwhelming. Recommendations are grounded in your
+                    Advice should feel clear and actionable not overwhelming. Recommendations are grounded in your
                     values and priorities, with plain-language explanations at every step.
                   </p>
                 </section>
