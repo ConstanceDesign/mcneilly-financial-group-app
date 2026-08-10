@@ -28,11 +28,10 @@ const Wealth: React.FC = () => {
       ),
     },
     {
-      title: 'ETFs',
+      title: 'ETFs - Exchange Traded Funds',
       content: (
         <p className="leading-relaxed">
-          Fixed-income investments where you lend money to a government or corporation in exchange for regular interest
-          payments and the return of your principal at maturity.
+          An exchanged-traded fund (ETF) pools a group of securities into a fund and can be traded like an individual stock on an exchange.
         </p>
       ),
     },
@@ -82,10 +81,10 @@ const Wealth: React.FC = () => {
       ),
     },
     {
-      title: 'Universal Life Insurance',
+      title: 'Life Insurance',
       content: (
         <p className="leading-relaxed">
-          Flexible life insurance with built-in investment options, designed to grow value over time while providing
+          Flexible life insurance, some with built-in investment options, designed to grow value over time while providing
           lifelong protection and estate planning benefits.
         </p>
       ),
