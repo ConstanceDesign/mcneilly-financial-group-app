@@ -1,8 +1,6 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import heroDesktop from '../images/about-hero-desktop.jpg';
-import heroTablet from '../images/contact-hero-tablet.jpg';
-import heroMobile from '../images/contact-hero-mobile.jpg';
 import LeadParagraph from 'components/LeadParagraph';
 import { FaComments } from 'react-icons/fa';
 
@@ -41,30 +39,26 @@ const About: React.FC = () => {
   return (
     <div className={`min-h-screen ${pageBg} text-[#1f2937] font-inter`}>
       <section aria-label="Contact page hero" className="relative">
-        <div className="relative overflow-hidden">
-          <picture>
-            <source media="(max-width: 640px)" srcSet={heroMobile} />
-            <source media="(max-width: 1024px)" srcSet={heroTablet} />
-            <img
-              src={heroDesktop}
-              alt="A warm conversation across generations"
-              className="
-                w-full
-                h-[clamp(250px,62vw,360px)]
-                sm:h-[clamp(280px,36vw,420px)]
-                lg:h-[clamp(280px,28vw,420px)]
-                object-cover
-                object-[72%_30%]
-                sm:object-[70%_34%]
-                lg:object-[74%_36%]
-                xl:object-[78%_34%]
-                saturate-[0.98]
-                contrast-[1.02]
-              "
-              loading="eager"
-              decoding="async"
-            />
-          </picture>
+
+        {/* DESKTOP HERO — UNCHANGED */}
+        <div className="relative overflow-hidden hidden sm:block">
+          <img
+            src={heroDesktop}
+            alt="A warm conversation across generations"
+            className="
+              w-full
+              sm:h-[clamp(280px,36vw,420px)]
+              lg:h-[clamp(280px,28vw,420px)]
+              object-cover
+              sm:object-[70%_34%]
+              lg:object-[74%_36%]
+              xl:object-[78%_34%]
+              saturate-[0.98]
+              contrast-[1.02]
+            "
+            loading="eager"
+            decoding="async"
+          />
 
           <div
             aria-hidden="true"
@@ -111,6 +105,60 @@ const About: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* MOBILE HERO */}
+        <div className="sm:hidden bg-[#f4f2ec]">
+
+          {/* EYEBROW + HEADLINE — ALIGNED WITH LOGO */}
+          <div className="px-9 pt-5">
+            <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
+              Philosophy • Planning • Stewardship
+            </p>
+
+            <h1 className="mt-3 font-sans text-[1.95rem] font-semibold tracking-tight text-[#102019] leading-[1.08]">
+              Our Financial
+              <br />
+              Philosophy
+            </h1>
+          </div>
+
+          {/* FULL-BLEED MOBILE IMAGE */}
+          <figure className="relative mt-5 w-full overflow-hidden">
+            <img
+              src={heroDesktop}
+              alt="A warm conversation across generations"
+              loading="eager"
+              decoding="async"
+              className="
+                block
+                w-full
+                h-52.5
+                object-cover
+                object-[78%_38%]
+                saturate-[0.98]
+                contrast-[1.02]
+              "
+            />
+
+            <div
+              aria-hidden="true"
+              className="
+                absolute
+                inset-0
+                bg-[linear-gradient(90deg,rgba(244,242,236,0.7),rgba(244,242,236,0.50),rgba(244,242,236,0.05))]
+              "
+            />
+          </figure>
+
+          {/* PARAGRAPH — SAME LEFT EDGE AS LOGO + HEADLINE */}
+          <div className="px-9">
+            <p className="mt-4 pb-8 text-[15px] text-[#1f2937]/80 leading-[1.65] max-w-[44ch]">
+              Disciplined planning that protects capital, and supports your lifestyle
+              at every stage of your financial journey.
+            </p>
+          </div>
+
         </div>
 
         <div className="h-10 sm:h-12 bg-[linear-gradient(to_bottom,rgba(244,242,236,0.0),rgba(244,242,236,1))]" />

@@ -2,11 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import {
   FaUsers,
-  FaShieldAlt,
   FaCheckCircle,
-  FaChartLine,
   FaLightbulb,
-  FaHeartbeat,
 } from 'react-icons/fa';
 
 const reveal = {
@@ -30,124 +27,161 @@ const Reveal: React.FC<{
   </motion.div>
 );
 
+const Divider = () => (
+  <div className="my-8 h-px bg-black/10" aria-hidden="true" />
+);
+
+const card =
+  'rounded-xl border border-black/10 bg-white/60 backdrop-blur-sm shadow-sm';
+
+const insightCard =
+  'rounded-xl border border-[#8cbe3f] bg-[#f1f7ea] p-5 shadow-sm';
+
 const GroupInsurance: React.FC = () => {
   return (
-    <section aria-labelledby="group-insurance-heading" className="text-[#1f2937]">
-      {/* SECTION 1: Editorial intro */}
-      <Reveal className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-        <div className="lg:col-span-7">
-          <div className="inline-flex items-center gap-3">
-            <span className="text-[#0f5028]/70" aria-hidden="true">
-              <FaUsers className="text-2xl" />
+    <section
+      aria-labelledby="group-insurance-heading"
+      className="text-[#333333]"
+    >
+      <Reveal className="grid gap-8 lg:grid-cols-2 lg:gap-10 items-start">
+        <div className="space-y-5">
+          <div className="flex items-start gap-3 mb-3">
+            <span
+              className="
+                mt-0.5
+                inline-flex
+                h-10
+                w-10
+                shrink-0
+                items-center
+                justify-center
+                rounded-lg
+                bg-[#f0f6ea]
+                text-[#2f7a2e]
+                shadow-sm
+              "
+              aria-hidden="true"
+            >
+              <FaUsers className="h-[18px] w-[18px]" />
             </span>
 
             <h2
               id="group-insurance-heading"
-              className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#102019]"
+              className="
+                font-sans
+                text-3xl
+                font-semibold
+                tracking-tight
+                leading-[1.12]
+                text-[#0f5028]
+              "
             >
               Group Insurance Plans
             </h2>
           </div>
 
-          <p className="mt-5 text-base sm:text-[1.05rem] leading-relaxed text-[#1f2937]/75">
+          <p className="leading-relaxed">
             A strong group plan is one of the most effective ways to attract and retain top talent. Offering health,
             life, and disability coverage signals stability, care, and long-term commitment to your team.
           </p>
 
-          <p className="mt-4 text-sm sm:text-base leading-relaxed text-[#1f2937]/70">
+          <p className="leading-relaxed">
             We work with a wide range of carriers to help businesses implement plans that are cost-effective, flexible,
             and sustainable — designed to evolve as your company grows.
           </p>
+
+          <div className="pt-4 border-t border-[#d4d4d4]">
+            <h3
+              className="
+                font-sans
+                text-2xl
+                font-semibold
+                tracking-tight
+                leading-tight
+                text-[#0f5028]
+                mb-4
+              "
+            >
+              Benefits of Group Coverage
+            </h3>
+
+            <ul className="space-y-2">
+              {[
+                'Boosts employee satisfaction, engagement, and retention',
+                'Can include health, dental, vision, life, and disability coverage',
+                'Premiums may be tax-deductible for employers (depending on structure)',
+                'Cost-sharing and customization options for small businesses',
+                'Coverage can extend to dependents and family members',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <FaCheckCircle
+                    className="mt-1 h-4 w-4 shrink-0 text-[#2f7a2e]"
+                    aria-hidden="true"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <div className="lg:col-span-5">
-          <div className="rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] p-5 sm:p-6">
-            <div className="flex items-center gap-2">
-              <FaChartLine className="text-[#0f5028]/70" aria-hidden="true" />
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-[#102019]/75">
-                Why work with us
-              </h3>
-            </div>
+        <div className="space-y-5">
+          <div className={`${card} p-5 sm:p-6`}>
+            <h3
+              className="
+                font-sans
+                text-2xl
+                font-semibold
+                tracking-tight
+                leading-tight
+                text-[#0f5028]
+                mb-4
+              "
+            >
+              Why Work With Us
+            </h3>
 
-            <p className="mt-3 text-sm leading-relaxed text-[#1f2937]/70">
+            <p className="leading-relaxed">
               Whether you have two employees or two hundred, we help you compare options, understand tradeoffs, and
               implement coverage that supports retention and day-to-day confidence.
             </p>
 
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <div className="rounded-lg border border-black/10 bg-white/55 p-4">
-                <div className="flex items-center gap-2">
-                  <FaHeartbeat className="text-[#0f5028]/60" aria-hidden="true" />
-                  <p className="text-sm font-semibold text-[#102019]">
-                    Support your people
-                  </p>
-                </div>
+                <h4 className="text-base font-semibold text-[#0f5028]">
+                  Support Your People
+                </h4>
 
-                <p className="mt-2 text-sm text-[#1f2937]/65 leading-relaxed">
+                <p className="mt-2 text-sm text-[#1f2937]/70 leading-relaxed">
                   Benefits help employees feel supported — and reduce turnover risk.
                 </p>
               </div>
 
               <div className="rounded-lg border border-black/10 bg-white/55 p-4">
-                <div className="flex items-center gap-2">
-                  <FaShieldAlt className="text-[#0f5028]/60" aria-hidden="true" />
-                  <p className="text-sm font-semibold text-[#102019]">
-                    Protect your business
-                  </p>
-                </div>
+                <h4 className="text-base font-semibold text-[#0f5028]">
+                  Protect Your Business
+                </h4>
 
-                <p className="mt-2 text-sm text-[#1f2937]/65 leading-relaxed">
+                <p className="mt-2 text-sm text-[#1f2937]/70 leading-relaxed">
                   A plan that balances cost control and real coverage strengthens resilience.
                 </p>
               </div>
             </div>
           </div>
-        </div>
-      </Reveal>
 
-      <div className="my-12 h-px bg-black/5" aria-hidden="true" />
+          <div className={insightCard}>
+            <div className="flex items-center gap-2 mb-2">
+              <FaLightbulb
+                className="h-4 w-4 shrink-0 text-[#2f7a2e]"
+                aria-hidden="true"
+              />
 
-      {/* SECTION 2: Benefits */}
-      <Reveal className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-        <div className="lg:col-span-7">
-          <div className="flex items-center gap-2">
-            <FaShieldAlt className="text-[#0f5028]/70" aria-hidden="true" />
-            <h3 className="text-2xl font-semibold text-[#102019]">
-              Benefits of Group Coverage
-            </h3>
-          </div>
-
-          <p className="mt-4 text-sm sm:text-base text-[#1f2937]/70 leading-relaxed">
-            A well-designed plan can strengthen retention, reduce stress for employees, and help employers present a
-            more complete total-compensation package.
-          </p>
-
-          <ul className="mt-6 space-y-3 text-[#1f2937]/75">
-            {[
-              'Boosts employee satisfaction, engagement, and retention',
-              'Can include health, dental, vision, life, and disability coverage',
-              'Premiums may be tax-deductible for employers (depending on structure)',
-              'Cost-sharing and customization options for small businesses',
-              'Coverage can extend to dependents and family members',
-            ].map((item) => (
-              <li key={item} className="flex items-start gap-3">
-                <FaCheckCircle className="mt-1 text-[#0f5028]/65" aria-hidden="true" />
-                <span className="leading-relaxed">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="lg:col-span-5">
-          <div className="rounded-xl border border-[#0f5028]/20 bg-[#f7fbf3] p-6 shadow-sm">
-            <div className="flex items-center gap-2">
-              <FaLightbulb className="text-[#0f5028]/70" aria-hidden="true" />
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]">
-                Expert tip
-              </p>
+              <span className="text-xs font-semibold tracking-wide uppercase text-[#0f5028]">
+                Expert Tip
+              </span>
             </div>
 
-            <p className="mt-3 text-sm sm:text-base text-[#102019]/80 font-medium leading-relaxed">
+            <p className="text-sm sm:text-base text-[#0f5028] font-medium leading-relaxed">
               Employers offering even a thoughtfully designed basic benefits package gain a competitive hiring edge.
               It’s a clear signal of stability, care, and long-term vision.
             </p>
@@ -155,37 +189,47 @@ const GroupInsurance: React.FC = () => {
         </div>
       </Reveal>
 
-      <div className="my-12 h-px bg-black/5" aria-hidden="true" />
+      <Divider />
 
-      {/* SECTION 3: How it works */}
       <Reveal>
-        <h3 className="text-2xl font-semibold text-[#102019]">
+        <h3
+          className="
+            font-sans
+            text-2xl
+            font-semibold
+            tracking-tight
+            leading-tight
+            text-[#0f5028]
+            mb-4
+          "
+        >
           How Group Plans Typically Come Together
         </h3>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
             {
               title: 'Discovery',
               body: 'We review your team size, goals, budget range, and the types of coverage that matter most.',
             },
             {
-              title: 'Compare options',
+              title: 'Compare Options',
               body: 'We shortlist carrier options and structures that align with your priorities and workforce.',
             },
             {
-              title: 'Implement & evolve',
+              title: 'Implement & Evolve',
               body: 'We coordinate setup and help ensure the plan evolves as your company grows.',
             },
           ].map((step) => (
             <div
               key={step.title}
-              className="rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] p-5"
+              className={`${card} p-5`}
             >
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]/70">
+              <h4 className="text-base font-semibold text-[#0f5028] leading-snug">
                 {step.title}
-              </p>
-              <p className="mt-3 text-sm text-[#1f2937]/70 leading-relaxed">
+              </h4>
+
+              <p className="mt-2 text-sm text-[#1f2937]/75 leading-relaxed">
                 {step.body}
               </p>
             </div>

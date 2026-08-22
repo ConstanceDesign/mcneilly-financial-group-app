@@ -331,9 +331,10 @@ const Contact: React.FC = () => {
   return (
     <div className={`min-h-screen ${pageBg} text-[#1f2937] font-inter`}>
       <section aria-label="Contact page hero" className="relative">
-        <div className="relative overflow-hidden">
+
+        {/* DESKTOP / TABLET HERO — UNCHANGED */}
+        <div className="relative overflow-hidden hidden sm:block">
           <picture>
-            <source media="(max-width: 640px)" srcSet={heroMobile} />
             <source media="(max-width: 1024px)" srcSet={heroTablet} />
             <img
               src={heroDesktop}
@@ -342,11 +343,9 @@ const Contact: React.FC = () => {
               decoding="async"
               className="
                 w-full
-                h-[clamp(250px,62vw,360px)]
                 sm:h-[clamp(280px,36vw,420px)]
                 lg:h-[clamp(280px,28vw,420px)]
                 object-cover
-                object-[72%_30%]
                 sm:object-[70%_34%]
                 lg:object-[74%_36%]
                 xl:object-[78%_34%]
@@ -360,10 +359,12 @@ const Contact: React.FC = () => {
             aria-hidden="true"
             className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,242,236,0.96),rgba(244,242,236,0.84),rgba(15,80,40,0.08))]"
           />
+
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-[radial-gradient(circle_at_82%_38%,rgba(0,0,0,0.12),transparent_56%)]"
           />
+
           <div
             aria-hidden="true"
             className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.14),transparent)]"
@@ -399,6 +400,60 @@ const Contact: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* MOBILE HERO */}
+        <div className="sm:hidden bg-[#f4f2ec]">
+
+          {/* EYEBROW + HEADLINE — ALIGNED WITH LOGO */}
+          <div className="px-9 pt-5">
+            <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
+              Consultation • Planning • Protection
+            </p>
+
+            <h1 className="mt-3 font-sans text-[1.95rem] font-semibold tracking-tight text-[#102019] leading-[1.08]">
+              Let&apos;s Talk About
+              <br />
+              Your Financial Plan
+            </h1>
+          </div>
+
+          {/* FULL-BLEED MOBILE IMAGE */}
+          <figure className="relative mt-5 w-full overflow-hidden">
+            <img
+              src={heroMobile}
+              alt="A warm conversation across generations"
+              loading="eager"
+              decoding="async"
+              className="
+                block
+                w-full
+                h-52.5
+                object-cover
+                object-[72%_30%]
+                saturate-[0.98]
+                contrast-[1.02]
+              "
+            />
+
+            {/* MATCHING SOFT FILTER */}
+            <div
+              aria-hidden="true"
+              className="
+                absolute
+                inset-0
+                bg-[linear-gradient(90deg,rgba(244,242,236,0.7),rgba(244,242,236,0.50),rgba(244,242,236,0.05))]
+              "
+            />
+          </figure>
+
+          {/* SUPPORTING PARAGRAPH — SAME LEFT EDGE */}
+          <div className="px-9">
+            <p className="mt-4 pb-8 text-[15px] text-[#1f2937]/80 leading-[1.65] max-w-[52ch]">
+              Clear, conservative guidance for retirement, insurance, and long-term planning, in person or virtually.
+            </p>
+          </div>
+
         </div>
 
         <div className="h-10 sm:h-12 bg-[linear-gradient(to_bottom,rgba(244,242,236,0.0),rgba(244,242,236,1))]" />

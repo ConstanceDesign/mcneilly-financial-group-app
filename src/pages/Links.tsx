@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   FaExternalLinkAlt,
@@ -62,11 +62,55 @@ const Links: React.FC = () => {
   const [announcement, setAnnouncement] = useState('');
   const shouldReduceMotion = useReducedMotion();
 
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  /*
+   * SEO
+   * Page-specific metadata only.
+   * No visual or structural changes.
+   */
+  useEffect(() => {
+    const previousTitle = document.title;
+
+    document.title =
+      'Financial Resources & Links | McNeilly Financial Group';
+
+    let description = document.querySelector<HTMLMetaElement>(
+      'meta[name="description"]'
+    );
+
+    const descriptionWasCreated = !description;
+    const previousDescription = description?.getAttribute('content') ?? '';
+
+    if (!description) {
+      description = document.createElement('meta');
+      description.name = 'description';
+      document.head.appendChild(description);
+    }
+
+    description.content =
+      'Explore trusted financial resources selected by McNeilly Financial Group, including investment companies, industry associations, financial information and personal finance tools.';
+
+    return () => {
+      document.title = previousTitle;
+
+      if (descriptionWasCreated) {
+        description?.remove();
+      } else if (description) {
+        description.content = previousDescription;
+      }
+    };
+  }, []);
+
   useEffect(() => {
     const currentLabel = tabs.find((t) => t.id === activeTab)?.label;
     if (currentLabel) setAnnouncement(`${currentLabel} tab selected`);
   }, [activeTab]);
 
+  /*
+   * Accessible keyboard tab navigation.
+   * Arrow keys change both selection and keyboard focus.
+   */
   const handleTabKeyDown = (
     event: React.KeyboardEvent<HTMLButtonElement>,
     id: TabId
@@ -82,9 +126,21 @@ const Links: React.FC = () => {
     } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
       newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
       event.preventDefault();
+    } else if (event.key === 'Home') {
+      newIndex = 0;
+      event.preventDefault();
+    } else if (event.key === 'End') {
+      newIndex = tabs.length - 1;
+      event.preventDefault();
     }
 
-    if (newIndex !== currentIndex) setActiveTab(tabs[newIndex].id);
+    if (newIndex !== currentIndex) {
+      setActiveTab(tabs[newIndex].id);
+
+      requestAnimationFrame(() => {
+        tabRefs.current[newIndex]?.focus();
+      });
+    }
   };
 
   const pageBg = 'bg-[#f4f2ec]';
@@ -214,7 +270,8 @@ const Links: React.FC = () => {
           aria-label="Links page hero"
           className="relative"
         >
-          <div className="relative overflow-hidden">
+          {/* DESKTOP HERO — UNCHANGED */}
+          <div className="relative overflow-hidden hidden sm:block">
             <img
               src={heroImage}
               alt="Explore trusted links to financial resources."
@@ -222,7 +279,6 @@ const Links: React.FC = () => {
               decoding="async"
               className="
                 w-full
-                h-[clamp(250px,62vw,360px)]
                 sm:h-[clamp(280px,36vw,420px)]
                 lg:h-[clamp(280px,28vw,420px)]
                 object-cover
@@ -282,6 +338,59 @@ const Links: React.FC = () => {
             </div>
           </div>
 
+          {/* MOBILE HERO */}
+          <div className="sm:hidden bg-[#f4f2ec]">
+
+            {/* EYEBROW + HEADLINE — ALIGNED WITH LOGO */}
+            <div className="px-9 pt-5">
+              <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
+                Research • Education • Tools
+              </p>
+
+              <h1 className="mt-3 font-sans text-[1.95rem] font-semibold tracking-tight text-[#102019] leading-[1.08]">
+                Trusted Financial
+                <br />
+                Resource Links
+              </h1>
+            </div>
+
+            {/* FULL-BLEED MOBILE IMAGE */}
+            <figure className="relative mt-5 w-full overflow-hidden">
+              <img
+                src={heroImage}
+                alt="Explore trusted links to financial resources."
+                loading="eager"
+                decoding="async"
+                className="
+                  block
+                  w-full
+                  h-52.5
+                  object-cover
+                  object-[56%_40%]
+                  saturate-[0.98]
+                  contrast-[1.02]
+                "
+              />
+
+              <div
+                aria-hidden="true"
+                className="
+                  absolute
+                  inset-0
+                  bg-[linear-gradient(90deg,rgba(244,242,236,0.7),rgba(244,242,236,0.50),rgba(244,242,236,0.05))]
+                "
+              />
+            </figure>
+
+            {/* PARAGRAPH — SAME LEFT EDGE AS LOGO + HEADLINE */}
+            <div className="px-9">
+              <p className="mt-4 pb-8 text-[15px] text-[#1f2937]/80 leading-[1.65] max-w-[52ch]">
+                A curated collection of reliable sites to help you compare options, learn fundamentals, and stay
+                informed.
+              </p>
+            </div>
+          </div>
+
           <div className="h-10 sm:h-12 bg-[linear-gradient(to_bottom,rgba(244,242,236,0.0),rgba(244,242,236,1))]" />
         </section>
       </header>
@@ -289,7 +398,7 @@ const Links: React.FC = () => {
       <main
         id="main-content"
         tabIndex={-1}
-        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
+        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-6 md:pb-8"
       >
         <div
           className="
@@ -315,10 +424,6 @@ const Links: React.FC = () => {
                 <h2 className={h2}>
                   Explore resources by category
                 </h2>
-
-                <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed max-w-[68ch] mx-auto">
-                  Select a category to view details. Use Arrow keys to move between tabs.
-                </p>
               </header>
 
               <div className="mt-5 h-px w-full bg-black/10" />
@@ -328,13 +433,16 @@ const Links: React.FC = () => {
                 role="tablist"
                 aria-label="Financial resource categories"
               >
-                {tabs.map((tab) => {
+                {tabs.map((tab, index) => {
                   const isActive =
                     activeTab === tab.id;
 
                   return (
                     <button
                       key={tab.id}
+                      ref={(element) => {
+                        tabRefs.current[index] = element;
+                      }}
                       type="button"
                       onClick={() =>
                         setActiveTab(tab.id)

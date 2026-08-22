@@ -132,7 +132,9 @@ const Wealth: React.FC = () => {
   return (
     <div className={`min-h-screen ${pageBg} text-[#1f2937] font-inter`}>
       <section aria-label="Wealth page hero" className="relative">
-        <div className="relative overflow-hidden">
+
+        {/* DESKTOP HERO — UNCHANGED */}
+        <div className="relative overflow-hidden hidden sm:block">
           <img
             src={heroImage}
             alt="Investing for the future"
@@ -140,7 +142,6 @@ const Wealth: React.FC = () => {
             decoding="async"
             className="
               w-full
-              h-[clamp(250px,62vw,360px)]
               sm:h-[clamp(280px,36vw,420px)]
               lg:h-[clamp(280px,28vw,420px)]
               object-cover
@@ -195,6 +196,60 @@ const Wealth: React.FC = () => {
             </div>
           </div>
         </div>
+
+{/* MOBILE HERO */}
+<div className="sm:hidden bg-[#f4f2ec]">
+
+  {/* EYEBROW + HEADLINE — ALIGNED WITH LOGO */}
+  <div className="px-9 pt-5">
+    <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
+      Saving • Investing • Planning
+    </p>
+
+    <h1 className="mt-3 font-sans text-[1.95rem] font-semibold tracking-tight text-[#102019] leading-[1.08]">
+      Secure Your Future
+      <br />
+      Through Investing
+    </h1>
+  </div>
+
+  {/* FULL-BLEED MOBILE IMAGE */}
+  <figure className="relative mt-5 w-full overflow-hidden">
+    <img
+      src={heroImage}
+      alt="Investing for the future"
+      loading="eager"
+      decoding="async"
+      className="
+        block
+        w-full
+        h-52.5
+        object-cover
+        object-[58%_38%]
+        saturate-[0.98]
+        contrast-[1.02]
+      "
+    />
+
+    <div
+      aria-hidden="true"
+      className="
+        absolute
+        inset-0
+        bg-[linear-gradient(90deg,rgba(244,242,236,0.7),rgba(244,242,236,0.50),rgba(244,242,236,0.05))]
+      "
+    />
+  </figure>
+
+  {/* PARAGRAPH — SAME LEFT EDGE AS LOGO + HEADLINE */}
+  <div className="px-9">
+    <p className="mt-4 pb-8 text-[15px] text-[#1f2937]/80 leading-[1.65] max-w-[52ch]">
+      Thoughtful saving and investing can help protect your lifestyle today while building the assets
+      you&apos;ll rely on tomorrow.
+    </p>
+  </div>
+
+</div>
 
         <div className="h-10 sm:h-12 bg-[linear-gradient(to_bottom,rgba(244,242,236,0.0),rgba(244,242,236,1))]" />
       </section>
@@ -269,6 +324,7 @@ const Wealth: React.FC = () => {
                             aria-controls={`accordion-content-${index}`}
                           >
                             <span className="text-[15px] sm:text-[16px] leading-snug">{item.title}</span>
+
                             <motion.span
                               animate={{ rotate: isActive ? 180 : 0 }}
                               transition={{ duration: 0.25 }}
@@ -295,7 +351,9 @@ const Wealth: React.FC = () => {
                             )}
                           </AnimatePresence>
 
-                          {index < investmentOptions.length - 1 && !isActive && <div className="h-px bg-black/10" />}
+                          {index < investmentOptions.length - 1 && !isActive && (
+                            <div className="h-px bg-black/10" />
+                          )}
                         </div>
                       );
                     })}
@@ -309,7 +367,11 @@ const Wealth: React.FC = () => {
               </p>
 
               <div className="mt-6">
-                <button onClick={handleContactClick} className={ctaBtn} aria-label="Contact us for a free consultation">
+                <button
+                  onClick={handleContactClick}
+                  className={ctaBtn}
+                  aria-label="Contact us for a free consultation"
+                >
                   <FaComments aria-hidden="true" />
                   FREE CONSULTATION
                 </button>

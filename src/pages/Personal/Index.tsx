@@ -61,7 +61,13 @@ const Personal: React.FC = () => {
   };
 
   const onTabKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft' && e.key !== 'Home' && e.key !== 'End') return;
+    if (
+      e.key !== 'ArrowRight' &&
+      e.key !== 'ArrowLeft' &&
+      e.key !== 'Home' &&
+      e.key !== 'End'
+    )
+      return;
 
     e.preventDefault();
 
@@ -81,7 +87,8 @@ const Personal: React.FC = () => {
     }
 
     const dir = e.key === 'ArrowRight' ? 1 : -1;
-    const nextIndex = (currentIndex + dir + orderedIds.length) % orderedIds.length;
+    const nextIndex =
+      (currentIndex + dir + orderedIds.length) % orderedIds.length;
     const nextId = orderedIds[nextIndex];
 
     setActiveTab(nextId);
@@ -94,7 +101,8 @@ const Personal: React.FC = () => {
     'rounded-xl border border-black/10 bg-white/60 backdrop-blur-sm shadow-sm ' +
     'p-5 sm:p-6 h-full';
 
-  const h2 = 'font-sans text-2xl font-semibold tracking-tight text-[#0f5028]';
+  const h2 =
+    'font-sans text-2xl font-semibold tracking-tight text-[#0f5028]';
 
   const tabBase =
     'inline-flex items-center justify-center rounded-full border-2 px-4 py-2 ' +
@@ -124,7 +132,11 @@ const Personal: React.FC = () => {
           initial: { opacity: 0, y: 10 },
           whileInView: { opacity: 1, y: 0 },
           viewport: { once: true, amount: 0.2 },
-          transition: { duration: 0.45, ease: 'easeOut' as const, delay },
+          transition: {
+            duration: 0.45,
+            ease: 'easeOut' as const,
+            delay,
+          },
         };
 
   return (
@@ -137,17 +149,16 @@ const Personal: React.FC = () => {
       </a>
 
       <section aria-label="Personal page hero" className="relative">
-        <div className="relative overflow-hidden">
+        {/* DESKTOP / TABLET HERO — UNCHANGED */}
+        <div className="relative overflow-hidden hidden sm:block">
           <img
             src={heroImage}
             alt="Personal insurance options for individuals and families"
             className="
               w-full
-              h-[clamp(250px,62vw,360px)]
               sm:h-[clamp(280px,36vw,420px)]
               lg:h-[clamp(280px,28vw,420px)]
               object-cover
-              object-[62%_34%]
               sm:object-[66%_36%]
               lg:object-[70%_38%]
               xl:object-[72%_36%]
@@ -162,10 +173,12 @@ const Personal: React.FC = () => {
             aria-hidden="true"
             className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,242,236,0.96),rgba(244,242,236,0.84),rgba(15,80,40,0.08))]"
           />
+
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-[radial-gradient(circle_at_82%_38%,rgba(0,0,0,0.12),transparent_56%)]"
           />
+
           <div
             aria-hidden="true"
             className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.14),transparent)]"
@@ -183,12 +196,14 @@ const Personal: React.FC = () => {
                     <h1 className="mt-2.5 sm:mt-3 font-sans font-medium tracking-tight text-[#102019] leading-[1.05] text-[2.05rem] sm:text-5xl lg:text-6xl">
                       Personal
                       <br />
-                      <span className="whitespace-nowrap">Insurance Options</span>
+                      <span className="whitespace-nowrap">
+                        Insurance Options
+                      </span>
                     </h1>
 
                     <p className="mt-3 text-[16px] sm:text-[16px] text-[#1f2937]/80 leading-relaxed max-w-[52ch]">
-                      Coordinated coverage designed to protect income, home, and long-term stability through every season of
-                      life.
+                      Coordinated coverage designed to protect income, home, and
+                      long-term stability through every season of life.
                     </p>
 
                     <a
@@ -204,10 +219,66 @@ const Personal: React.FC = () => {
           </div>
         </div>
 
+        {/* MOBILE HERO */}
+        <div className="sm:hidden bg-[#f4f2ec]">
+          {/* EYEBROW + HEADLINE — ALIGNED WITH LOGO */}
+          <div className="px-9 pt-5">
+            <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
+              Personal Coverage • Protection • Planning
+            </p>
+
+            <h1 className="mt-3 font-sans text-[1.95rem] font-semibold tracking-tight text-[#102019] leading-[1.08]">
+              Personal
+              <br />
+              Insurance Options
+            </h1>
+          </div>
+
+          {/* FULL-BLEED MOBILE IMAGE */}
+          <figure className="relative mt-5 w-full overflow-hidden">
+            <img
+              src={heroImage}
+              alt="Personal insurance options for individuals and families"
+              loading="eager"
+              decoding="async"
+              className="
+                block
+                w-full
+                h-52.5
+                object-cover
+                object-[62%_34%]
+                saturate-[0.98]
+                contrast-[1.02]
+              "
+            />
+
+            {/* MATCHING SOFT FILTER */}
+            <div
+              aria-hidden="true"
+              className="
+                absolute
+                inset-0
+                bg-[linear-gradient(90deg,rgba(244,242,236,0.7),rgba(244,242,236,0.50),rgba(244,242,236,0.05))]
+              "
+            />
+          </figure>
+
+          {/* SUPPORTING PARAGRAPH — SAME LEFT EDGE */}
+          <div className="px-9">
+            <p className="mt-4 pb-8 text-[15px] text-[#1f2937]/80 leading-[1.65] max-w-[52ch]">
+              Coordinated coverage designed to protect income, home, and
+              long-term stability through every season of life.
+            </p>
+          </div>
+        </div>
+
         <div className="h-10 sm:h-12 bg-[linear-gradient(to_bottom,rgba(244,242,236,0.0),rgba(244,242,236,1))]" />
       </section>
 
-      <main id="main-content" className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13">
+      <main
+        id="main-content"
+        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
+      >
         <div
           className="
             -mt-14 sm:-mt-16 lg:-mt-20
@@ -219,13 +290,18 @@ const Personal: React.FC = () => {
             p-5 sm:p-6 lg:p-7
           "
         >
-          <motion.section {...cardIn} className="grid gap-5 lg:gap-6">
-            <motion.article {...colIn(0)} className={softCard}>
+          <motion.section
+            {...cardIn}
+            className="grid gap-5 lg:gap-6"
+          >
+            <motion.article
+              {...colIn(0)}
+              className={softCard}
+            >
               <header className="text-center">
-                <h2 className={h2}>Explore coverage options</h2>
-                <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed max-w-[68ch] mx-auto">
-                  Select a category to view details. Use Arrow keys to move between tabs.
-                </p>
+                <h2 className={h2}>
+                  Explore coverage options
+                </h2>
               </header>
 
               <div className="mt-5 h-px w-full bg-black/10" />
@@ -252,16 +328,23 @@ const Personal: React.FC = () => {
                       aria-controls={`${tab.id}-panel`}
                       id={`${tab.id}-tab`}
                       tabIndex={isActive ? 0 : -1}
-                      className={`${tabBase} ${isActive ? tabActive : tabIdle}`}
+                      className={`${tabBase} ${
+                        isActive ? tabActive : tabIdle
+                      }`}
                     >
-                      <span className="text-center leading-tight">{tab.label}</span>
+                      <span className="text-center leading-tight">
+                        {tab.label}
+                      </span>
                     </button>
                   );
                 })}
               </div>
             </motion.article>
 
-            <motion.article {...colIn(0.06)} className={softCard}>
+            <motion.article
+              {...colIn(0.06)}
+              className={softCard}
+            >
               <AnimatePresence mode="wait">
                 <motion.section
                   key={activeTab}
@@ -272,7 +355,10 @@ const Personal: React.FC = () => {
                   animate="visible"
                   exit="exit"
                   variants={reduceMotion ? fadeNoMotion : fadeInUp}
-                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                  transition={{
+                    duration: 0.35,
+                    ease: 'easeOut',
+                  }}
                 >
                   <div className="flex flex-col gap-4 md:gap-6">
                     {tabComponents[activeTab]}
