@@ -442,7 +442,9 @@ const Footer: React.FC = () => {
 
                     {/* Mobile separator between McNeilly and Links */}
                     <div
-                      className="mt-7 h-px w-full bg-black/10 md:hidden"
+                  className="
+                    mt-7 h-px bg-black/10
+                    w-screen md:hidden"
                       aria-hidden="true"
                     />
                   </div>
