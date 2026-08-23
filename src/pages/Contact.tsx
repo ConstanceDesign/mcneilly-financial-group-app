@@ -62,7 +62,12 @@ const Contact: React.FC = () => {
 
   const today = useMemo(() => {
     const d = new Date();
-    return d.toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: '2-digit' });
+
+    return d.toLocaleDateString('en-CA', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+    });
   }, []);
 
   const track = (event: string, params?: Record<string, any>) => {
@@ -78,23 +83,50 @@ const Contact: React.FC = () => {
     if (window.grecaptcha) return;
 
     await new Promise<void>((resolve, reject) => {
-      const existing = document.querySelector<HTMLScriptElement>('script[data-recaptcha-v3="true"]');
+      const existing = document.querySelector<HTMLScriptElement>(
+        'script[data-recaptcha-v3="true"]'
+      );
 
       if (existing) {
         existing.addEventListener('load', () => resolve());
-        existing.addEventListener('error', () => reject(new Error('Failed to load reCAPTCHA')));
+        existing.addEventListener('error', () =>
+          reject(new Error('Failed to load reCAPTCHA'))
+        );
         return;
       }
 
       const s = document.createElement('script');
-      s.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(V3_SITE_KEY)}`;
+      s.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(
+        V3_SITE_KEY
+      )}`;
       s.async = true;
       s.defer = true;
       s.setAttribute('data-recaptcha-v3', 'true');
       s.onload = () => resolve();
       s.onerror = () => reject(new Error('Failed to load reCAPTCHA'));
+
       document.head.appendChild(s);
     });
+  };
+
+  const ensureRecaptchaBadgeStyle = () => {
+    if (!isV3) return;
+
+    const existingStyle = document.querySelector<HTMLStyleElement>(
+      'style[data-recaptcha-badge-style="true"]'
+    );
+
+    if (existingStyle) return;
+
+    const style = document.createElement('style');
+    style.setAttribute('data-recaptcha-badge-style', 'true');
+    style.textContent = `
+      .grecaptcha-badge {
+        visibility: hidden !important;
+      }
+    `;
+
+    document.head.appendChild(style);
   };
 
   const getV3Token = async () => {
@@ -107,7 +139,10 @@ const Contact: React.FC = () => {
     return await new Promise<string | null>((resolve) => {
       window.grecaptcha!.ready(async () => {
         try {
-          const token = await window.grecaptcha!.execute(V3_SITE_KEY, { action: 'contact_submit' });
+          const token = await window.grecaptcha!.execute(V3_SITE_KEY, {
+            action: 'contact_submit',
+          });
+
           resolve(token);
         } catch {
           resolve(null);
@@ -118,6 +153,8 @@ const Contact: React.FC = () => {
 
   useEffect(() => {
     if (isV3) {
+      ensureRecaptchaBadgeStyle();
+
       ensureRecaptchaV3Script().catch(() => {
         // handled on submit
       });
@@ -126,20 +163,30 @@ const Contact: React.FC = () => {
   }, [isV3]);
 
   useEffect(() => {
-    if (error) setTimeout(() => alertRef.current?.focus(), 0);
+    if (error) {
+      setTimeout(() => alertRef.current?.focus(), 0);
+    }
   }, [error]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     const key = name as FieldKey;
 
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
     setError(null);
 
     setFieldErrors((prev) => {
       if (!prev[key]) return prev;
+
       const next = { ...prev };
       delete next[key];
+
       return next;
     });
 
@@ -149,31 +196,65 @@ const Contact: React.FC = () => {
   const validate = () => {
     const errs: FieldErrors = {};
 
-    if (!formData.name.trim()) errs.name = 'Please enter your name.';
-    if (!formData.email.trim()) errs.email = 'Please enter your email.';
-    if (!formData.message.trim()) errs.message = 'Please enter a message.';
+    if (!formData.name.trim()) {
+      errs.name = 'Please enter your name.';
+    }
 
-    const firstKey = (Object.keys(errs)[0] as FieldKey | undefined) || null;
+    if (!formData.email.trim()) {
+      errs.email = 'Please enter your email.';
+    }
+
+    if (!formData.message.trim()) {
+      errs.message = 'Please enter a message.';
+    }
+
+    const firstKey =
+      (Object.keys(errs)[0] as FieldKey | undefined) || null;
 
     const focusFirst = () => {
       if (!firstKey) return;
-      if (firstKey === 'name') nameRef.current?.focus();
-      if (firstKey === 'email') emailRef.current?.focus();
-      if (firstKey === 'phone') phoneRef.current?.focus();
-      if (firstKey === 'message') messageRef.current?.focus();
+
+      if (firstKey === 'name') {
+        nameRef.current?.focus();
+      }
+
+      if (firstKey === 'email') {
+        emailRef.current?.focus();
+      }
+
+      if (firstKey === 'phone') {
+        phoneRef.current?.focus();
+      }
+
+      if (firstKey === 'message') {
+        messageRef.current?.focus();
+      }
     };
 
-    return { errs, firstKey, focusFirst };
+    return {
+      errs,
+      firstKey,
+      focusFirst,
+    };
   };
 
   const handleReset = () => {
-    setFormData({ name: '', email: '', phone: '', message: '' });
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      message: '',
+    });
+
     setCaptchaToken(null);
     setError(null);
     setFieldErrors({});
     setSubmitted(false);
 
-    track('contact_reset', { event_category: 'Contact', event_label: 'Reset' });
+    track('contact_reset', {
+      event_category: 'Contact',
+      event_label: 'Reset',
+    });
 
     setTimeout(() => nameRef.current?.focus(), 0);
   };
@@ -193,6 +274,7 @@ const Contact: React.FC = () => {
       });
 
       setTimeout(() => focusFirst(), 0);
+
       return;
     }
 
@@ -209,12 +291,19 @@ const Contact: React.FC = () => {
       }
 
       if (!tokenToSend) {
-        const msg =
-          isV3 || isV2
+        const msg = isV3
+          ? 'Security verification could not be completed. Please refresh the page and try again.'
+          : isV2
             ? 'Please complete reCAPTCHA before sending.'
             : 'reCAPTCHA is not configured. Set VITE_RECAPTCHA_V3_SITE_KEY preferred or VITE_RECAPTCHA_SITE_KEY.';
 
         setError(msg);
+
+        track('contact_submit_error', {
+          event_category: 'Contact',
+          event_label: 'recaptcha_verification_error',
+        });
+
         return;
       }
 
@@ -228,7 +317,14 @@ const Contact: React.FC = () => {
 
       if (res.data?.success) {
         setSubmitted(true);
-        setFormData({ name: '', email: '', phone: '', message: '' });
+
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          message: '',
+        });
+
         setCaptchaToken(null);
         setFieldErrors({});
 
@@ -260,20 +356,45 @@ const Contact: React.FC = () => {
   const cardIn = reduceMotion
     ? {}
     : {
-        initial: { opacity: 0, y: 14 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, amount: 0.2 },
-        transition: { duration: 0.55, ease: 'easeOut' as const },
+        initial: {
+          opacity: 0,
+          y: 14,
+        },
+        whileInView: {
+          opacity: 1,
+          y: 0,
+        },
+        viewport: {
+          once: true,
+          amount: 0.2,
+        },
+        transition: {
+          duration: 0.55,
+          ease: 'easeOut' as const,
+        },
       };
 
   const colIn = (delay = 0) =>
     reduceMotion
       ? {}
       : {
-          initial: { opacity: 0, y: 10 },
-          whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true, amount: 0.2 },
-          transition: { duration: 0.45, ease: 'easeOut' as const, delay },
+          initial: {
+            opacity: 0,
+            y: 10,
+          },
+          whileInView: {
+            opacity: 1,
+            y: 0,
+          },
+          viewport: {
+            once: true,
+            amount: 0.2,
+          },
+          transition: {
+            duration: 0.45,
+            ease: 'easeOut' as const,
+            delay,
+          },
         };
 
   const pageBg = 'bg-[#f4f2ec]';
@@ -282,9 +403,11 @@ const Contact: React.FC = () => {
     'rounded-xl border border-black/10 bg-white/60 backdrop-blur-sm shadow-sm ' +
     'p-5 sm:p-6 h-full';
 
-  const h2 = 'font-sans text-2xl font-semibold tracking-tight text-[#0f5028]';
+  const h2 =
+    'font-sans text-2xl font-semibold tracking-tight text-[#0f5028]';
 
-  const label = 'block text-[15px] font-semibold tracking-[0.01em] text-[#0f5028]';
+  const label =
+    'block text-[15px] font-semibold tracking-[0.01em] text-[#0f5028]';
 
   const input =
     'mt-1 w-full rounded-xs border border-black/20 bg-white/90 px-3 py-2.5 ' +
@@ -293,7 +416,8 @@ const Contact: React.FC = () => {
     'focus-visible:border-[#0f5028]/25 ' +
     'focus-visible:shadow-[0_0_0_3px_rgba(47,122,46,0.08)]';
 
-  const inputError = 'border-red-400 focus-visible:ring-red-200/60 focus-visible:border-red-300';
+  const inputError =
+    'border-red-400 focus-visible:ring-red-200/60 focus-visible:border-red-300';
 
   const primaryBtn =
     'btn inline-flex items-center justify-center gap-2 ' +
@@ -324,18 +448,26 @@ const Contact: React.FC = () => {
     'shadow-sm hover:shadow-md transition ' +
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0f5028]/25';
 
-  const destinationEncoded = '1608%20Sylvestre%20Dr%20%232D%2C%20Tecumseh%2C%20ON%20N8N%202L9';
-  const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destinationEncoded}`;
-  const appleMapsUrl = `https://maps.apple.com/?daddr=${destinationEncoded}`;
+  const destinationEncoded =
+    '1608%20Sylvestre%20Dr%20%232D%2C%20Tecumseh%2C%20ON%20N8N%202L9';
+
+  const googleMapsUrl =
+    `https://www.google.com/maps/dir/?api=1&destination=${destinationEncoded}`;
+
+  const appleMapsUrl =
+    `https://maps.apple.com/?daddr=${destinationEncoded}`;
 
   return (
     <div className={`min-h-screen ${pageBg} text-[#1f2937] font-inter`}>
       <section aria-label="Contact page hero" className="relative">
-
         {/* DESKTOP / TABLET HERO — UNCHANGED */}
         <div className="relative overflow-hidden hidden sm:block">
           <picture>
-            <source media="(max-width: 1024px)" srcSet={heroTablet} />
+            <source
+              media="(max-width: 1024px)"
+              srcSet={heroTablet}
+            />
+
             <img
               src={heroDesktop}
               alt="A warm conversation across generations"
@@ -382,11 +514,14 @@ const Contact: React.FC = () => {
                     <h1 className="mt-2.5 sm:mt-3 font-sans font-medium tracking-tight text-[#102019] leading-[1.05] text-[2.05rem] sm:text-5xl lg:text-6xl">
                       Let&apos;s Talk About
                       <br />
-                      <span className="whitespace-nowrap">Your Financial Plan</span>
+                      <span className="whitespace-nowrap">
+                        Your Financial Plan
+                      </span>
                     </h1>
 
                     <p className="mt-3 text-[16px] sm:text-[16px] text-[#1f2937]/80 leading-relaxed max-w-[52ch]">
-                      Clear, conservative guidance for retirement, insurance, and long-term planning, in person or virtually.
+                      Clear, conservative guidance for retirement, insurance, and
+                      long-term planning, in person or virtually.
                     </p>
 
                     <a
@@ -404,7 +539,6 @@ const Contact: React.FC = () => {
 
         {/* MOBILE HERO */}
         <div className="sm:hidden bg-[#f4f2ec]">
-
           {/* EYEBROW + HEADLINE — ALIGNED WITH LOGO */}
           <div className="px-9 pt-5">
             <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
@@ -450,16 +584,19 @@ const Contact: React.FC = () => {
           {/* SUPPORTING PARAGRAPH — SAME LEFT EDGE */}
           <div className="px-9">
             <p className="mt-4 pb-8 text-[15px] text-[#1f2937]/80 leading-[1.65] max-w-[52ch]">
-              Clear, conservative guidance for retirement, insurance, and long-term planning, in person or virtually.
+              Clear, conservative guidance for retirement, insurance, and
+              long-term planning, in person or virtually.
             </p>
           </div>
-
         </div>
 
         <div className="h-10 sm:h-12 bg-[linear-gradient(to_bottom,rgba(244,242,236,0.0),rgba(244,242,236,1))]" />
       </section>
 
-      <main id="main-content" className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13">
+      <main
+        id="main-content"
+        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
+      >
         <div
           className="
             -mt-14 sm:-mt-16 lg:-mt-20
@@ -471,10 +608,19 @@ const Contact: React.FC = () => {
             p-5 sm:p-6 lg:p-7
           "
         >
-          <motion.section {...cardIn} className="grid gap-5 lg:gap-6 xl:grid-cols-12 items-stretch">
-            <motion.article {...colIn(0)} className={`${softCard} xl:col-span-7`}>
+          <motion.section
+            {...cardIn}
+            className="grid gap-5 lg:gap-6 xl:grid-cols-12 items-stretch"
+          >
+            <motion.article
+              {...colIn(0)}
+              className={`${softCard} xl:col-span-7`}
+            >
               <header>
-                <h2 className={h2}>Start a conversation</h2>
+                <h2 className={h2}>
+                  Start a conversation
+                </h2>
+
                 <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
                   We reply personally within one business day.
                 </p>
@@ -496,11 +642,18 @@ const Contact: React.FC = () => {
                 >
                   <div className="flex items-start gap-2.5">
                     <FaCheckCircle
-                      className={`mt-1 text-sm ${error ? 'text-red-600' : 'text-[#2f7a2e]'}`}
+                      className={`mt-1 text-sm ${
+                        error
+                          ? 'text-red-600'
+                          : 'text-[#2f7a2e]'
+                      }`}
                       aria-hidden="true"
                     />
+
                     <div className="text-sm md:text-base font-medium leading-relaxed">
-                      {error ? error : 'Thank you, your message has been sent.'}
+                      {error
+                        ? error
+                        : 'Thank you, your message has been sent.'}
                     </div>
                   </div>
                 </div>
@@ -509,10 +662,16 @@ const Contact: React.FC = () => {
               {submitted ? (
                 <div className="mt-5">
                   <div className="rounded-xl border border-[#0f5028]/20 bg-white/70 p-4">
-                    <p className="text-[#0f5028] font-semibold">Message sent.</p>
+                    <p className="text-[#0f5028] font-semibold">
+                      Message sent.
+                    </p>
 
                     <div className="mt-4">
-                      <button type="button" onClick={handleReset} className={secondaryBtn}>
+                      <button
+                        type="button"
+                        onClick={handleReset}
+                        className={secondaryBtn}
+                      >
                         <FaUndo aria-hidden="true" />
                         SEND ANOTHER
                       </button>
@@ -520,16 +679,27 @@ const Contact: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-3.5 print:hidden mt-5" noValidate>
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-3.5 print:hidden mt-5"
+                  noValidate
+                >
                   <label className="block">
-                    <span className={label}>Name</span>
+                    <span className={label}>
+                      Name
+                    </span>
+
                     <input
                       ref={nameRef}
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       autoComplete="name"
-                      className={`${input} ${fieldErrors.name ? inputError : ''}`}
+                      className={`${input} ${
+                        fieldErrors.name
+                          ? inputError
+                          : ''
+                      }`}
                       placeholder="Your full name"
                       required
                       aria-required="true"
@@ -540,7 +710,10 @@ const Contact: React.FC = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5">
                     <label className="block md:col-span-8">
-                      <span className={label}>Email</span>
+                      <span className={label}>
+                        Email
+                      </span>
+
                       <input
                         ref={emailRef}
                         name="email"
@@ -548,7 +721,11 @@ const Contact: React.FC = () => {
                         value={formData.email}
                         onChange={handleChange}
                         autoComplete="email"
-                        className={`${input} ${fieldErrors.email ? inputError : ''}`}
+                        className={`${input} ${
+                          fieldErrors.email
+                            ? inputError
+                            : ''
+                        }`}
                         placeholder="you@example.com"
                         required
                         aria-required="true"
@@ -559,8 +736,12 @@ const Contact: React.FC = () => {
 
                     <label className="block md:col-span-4">
                       <span className={label}>
-                        Phone <span className="text-xs font-normal text-[#1f2937]/55">(optional)</span>
+                        Phone{' '}
+                        <span className="text-xs font-normal text-[#1f2937]/55">
+                          (optional)
+                        </span>
                       </span>
+
                       <input
                         ref={phoneRef}
                         name="phone"
@@ -577,14 +758,21 @@ const Contact: React.FC = () => {
                   </div>
 
                   <label className="block">
-                    <span className={label}>Message</span>
+                    <span className={label}>
+                      Message
+                    </span>
+
                     <textarea
                       ref={messageRef}
                       name="message"
                       rows={5}
                       value={formData.message}
                       onChange={handleChange}
-                      className={`${input} ${fieldErrors.message ? inputError : ''} resize-y`}
+                      className={`${input} ${
+                        fieldErrors.message
+                          ? inputError
+                          : ''
+                      } resize-y`}
                       placeholder="Tell us a bit about your goals or questions."
                       required
                       aria-required="true"
@@ -596,39 +784,103 @@ const Contact: React.FC = () => {
                   {!isV3 && (
                     <div className="pt-1.5">
                       {isV2 ? (
-                        <ReCAPTCHA sitekey={V2_SITE_KEY!} onChange={(t) => setCaptchaToken(t)} />
+                        <ReCAPTCHA
+                          sitekey={V2_SITE_KEY!}
+                          onChange={(t) =>
+                            setCaptchaToken(t)
+                          }
+                        />
                       ) : (
                         <p className="text-xs text-red-600">
-                          reCAPTCHA is not configured. Set VITE_RECAPTCHA_V3_SITE_KEY preferred or VITE_RECAPTCHA_SITE_KEY.
+                          reCAPTCHA is not configured. Set
+                          VITE_RECAPTCHA_V3_SITE_KEY preferred or
+                          VITE_RECAPTCHA_SITE_KEY.
                         </p>
                       )}
                     </div>
                   )}
 
                   <div className="pt-2 flex flex-col sm:flex-row sm:flex-wrap gap-3">
-                    <button type="submit" disabled={loading} className={primaryBtn}>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className={primaryBtn}
+                    >
                       <FaEnvelope aria-hidden="true" />
-                      {loading ? 'SENDING…' : 'SEND MESSAGE'}
+                      {loading
+                        ? 'SENDING…'
+                        : 'SEND MESSAGE'}
                     </button>
 
-                    <button type="button" onClick={handleReset} className={secondaryBtn} disabled={loading}>
+                    <button
+                      type="button"
+                      onClick={handleReset}
+                      className={secondaryBtn}
+                      disabled={loading}
+                    >
                       <FaUndo aria-hidden="true" />
                       RESET
                     </button>
                   </div>
 
+                  {isV3 && (
+                    <p className="text-[11px] leading-relaxed text-[#1f2937]/45">
+                      This site is protected by reCAPTCHA and the Google{' '}
+                      <a
+                        href="https://policies.google.com/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="
+                          underline underline-offset-2
+                          hover:text-[#0f5028]
+                          focus:outline-none
+                          focus-visible:ring-2
+                          focus-visible:ring-[#0f5028]/25
+                          rounded-sm
+                        "
+                      >
+                        Privacy Policy
+                      </a>{' '}
+                      and{' '}
+                      <a
+                        href="https://policies.google.com/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="
+                          underline underline-offset-2
+                          hover:text-[#0f5028]
+                          focus:outline-none
+                          focus-visible:ring-2
+                          focus-visible:ring-[#0f5028]/25
+                          rounded-sm
+                        "
+                      >
+                        Terms of Service
+                      </a>{' '}
+                      apply.
+                    </p>
+                  )}
+
                   <p className="text-xs text-[#1f2937]/65 leading-relaxed">
-                    Please do not include highly sensitive personal information. We will confirm the most secure way to share
-                    details during follow-up. Contact information is used solely to respond to your inquiry and is not used for
-                    marketing or solicitation purposes.
+                    Please do not include highly sensitive personal information.
+                    We will confirm the most secure way to share details during
+                    follow-up. Contact information is used solely to respond to
+                    your inquiry and is not used for marketing or solicitation
+                    purposes.
                   </p>
                 </form>
               )}
             </motion.article>
 
-            <motion.article {...colIn(0.06)} className={`${softCard} xl:col-span-5`}>
+            <motion.article
+              {...colIn(0.06)}
+              className={`${softCard} xl:col-span-5`}
+            >
               <header>
-                <h2 className={h2}>Call or visit our office</h2>
+                <h2 className={h2}>
+                  Call or visit our office
+                </h2>
+
                 <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
                   Appointments by request.
                 </p>
@@ -637,29 +889,56 @@ const Contact: React.FC = () => {
               <div className="mt-4 h-px w-full bg-black/10" />
 
               <div className="mt-5 text-[15px] sm:text-[16px] text-[#1f2937]/80 leading-relaxed">
-                <p className="font-semibold text-lg text-[#0f5028]">McNeilly Financial Group</p>
-                <p className="mt-2">1608 Sylvestre Drive, Suite 2D</p>
-                <p>Tecumseh, Ontario N8N 2L9</p>
+                <p className="font-semibold text-lg text-[#0f5028]">
+                  McNeilly Financial Group
+                </p>
+
+                <p className="mt-2">
+                  1608 Sylvestre Drive, Suite 2D
+                </p>
+
+                <p>
+                  Tecumseh, Ontario N8N 2L9
+                </p>
 
                 <div className="mt-5 space-y-4">
                   <div>
-                    <span className={label}>Phone</span>
-                    <a href={`tel:${OFFICE_PHONE_TEL}`} className="block underline underline-offset-4">
+                    <span className={label}>
+                      Phone
+                    </span>
+
+                    <a
+                      href={`tel:${OFFICE_PHONE_TEL}`}
+                      className="block underline underline-offset-4"
+                    >
                       {OFFICE_PHONE}
                     </a>
                   </div>
 
                   <div>
-                    <span className={label}>Fax</span>
-                    <a href={`tel:${OFFICE_FAX_TEL}`} className="block underline underline-offset-4">
+                    <span className={label}>
+                      Fax
+                    </span>
+
+                    <a
+                      href={`tel:${OFFICE_FAX_TEL}`}
+                      className="block underline underline-offset-4"
+                    >
                       {OFFICE_FAX}
                     </a>
                   </div>
 
                   <div>
-                    <span className={label}>Email</span>
+                    <span className={label}>
+                      Email
+                    </span>
+
                     <a
-                      href={OFFICE_EMAIL.startsWith('REPLACE_') ? undefined : `mailto:${OFFICE_EMAIL}`}
+                      href={
+                        OFFICE_EMAIL.startsWith('REPLACE_')
+                          ? undefined
+                          : `mailto:${OFFICE_EMAIL}`
+                      }
                       className="block break-words underline underline-offset-4"
                     >
                       {OFFICE_EMAIL}
@@ -667,18 +946,33 @@ const Contact: React.FC = () => {
                   </div>
 
                   <div>
-                    <span className={label}>Hours</span>
-                    <span className="block">Monday–Friday, 9:00 AM – 5:00 PM</span>
+                    <span className={label}>
+                      Hours
+                    </span>
+
+                    <span className="block">
+                      Monday–Friday, 9:00 AM – 5:00 PM
+                    </span>
                   </div>
                 </div>
 
                 <div className="mt-6 space-y-3">
-                  <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className={mapBtn}>
+                  <a
+                    href={googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={mapBtn}
+                  >
                     <FaMapMarkerAlt aria-hidden="true" />
                     OPEN IN GOOGLE MAPS
                   </a>
 
-                  <a href={appleMapsUrl} target="_blank" rel="noopener noreferrer" className={mapBtn}>
+                  <a
+                    href={appleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={mapBtn}
+                  >
                     <FaMapMarkerAlt aria-hidden="true" />
                     OPEN IN APPLE MAPS
                   </a>
@@ -690,7 +984,8 @@ const Contact: React.FC = () => {
       </main>
 
       <div className="hidden print:block p-6 text-xs text-gray-700">
-        This page was printed on {today}. For security, do not include sensitive information in printed copies.
+        This page was printed on {today}. For security, do not include sensitive
+        information in printed copies.
       </div>
     </div>
   );
