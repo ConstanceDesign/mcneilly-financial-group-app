@@ -1,8 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { motion, useReducedMotion } from 'framer-motion';
-import { FaEnvelope, FaUndo, FaCheckCircle, FaMapMarkerAlt } from 'react-icons/fa';
+import {
+  FaEnvelope,
+  FaUndo,
+  FaCheckCircle,
+  FaMapMarkerAlt,
+} from 'react-icons/fa';
 import heroDesktop from '../images/contact-hero-desktop.jpg';
 import heroTablet from '../images/contact-hero-tablet.jpg';
 import heroMobile from '../images/contact-hero-mobile.jpg';
@@ -10,10 +14,6 @@ import heroMobile from '../images/contact-hero-mobile.jpg';
 declare global {
   interface Window {
     gtag?: (...args: any[]) => void;
-    grecaptcha?: {
-      ready: (cb: () => void) => void;
-      execute: (siteKey: string, opts: { action: string }) => Promise<string>;
-    };
   }
 }
 
@@ -27,16 +27,17 @@ const Contact: React.FC = () => {
       ? 'http://localhost:5000'
       : '';
 
-  const V2_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined;
-  const V3_SITE_KEY = import.meta.env.VITE_RECAPTCHA_V3_SITE_KEY as string | undefined;
-
-  const isV3 = Boolean(V3_SITE_KEY);
-  const isV2 = Boolean(V2_SITE_KEY);
-
   const OFFICE_EMAIL =
-    (import.meta.env.VITE_OFFICE_EMAIL as string | undefined) || 'pmcneilly@sterlingmutuals.com';
-  const OFFICE_FAX = (import.meta.env.VITE_OFFICE_FAX as string | undefined) || '(519) 979 5432';
-  const OFFICE_PHONE = (import.meta.env.VITE_OFFICE_PHONE as string | undefined) || '(519) 979-5396';
+    (import.meta.env.VITE_OFFICE_EMAIL as string | undefined) ||
+    'pmcneilly@mcneillyfinancialgroup.ca';
+
+  const OFFICE_FAX =
+    (import.meta.env.VITE_OFFICE_FAX as string | undefined) ||
+    '(519) 979 5432';
+
+  const OFFICE_PHONE =
+    (import.meta.env.VITE_OFFICE_PHONE as string | undefined) ||
+    '(519) 979-5396';
 
   const OFFICE_PHONE_TEL = '+15199795396';
   const OFFICE_FAX_TEL = '+15199795432';
@@ -49,7 +50,6 @@ const Contact: React.FC = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -77,90 +77,6 @@ const Contact: React.FC = () => {
       // no-op
     }
   };
-
-  const ensureRecaptchaV3Script = async () => {
-    if (!V3_SITE_KEY) return;
-    if (window.grecaptcha) return;
-
-    await new Promise<void>((resolve, reject) => {
-      const existing = document.querySelector<HTMLScriptElement>(
-        'script[data-recaptcha-v3="true"]'
-      );
-
-      if (existing) {
-        existing.addEventListener('load', () => resolve());
-        existing.addEventListener('error', () =>
-          reject(new Error('Failed to load reCAPTCHA'))
-        );
-        return;
-      }
-
-      const s = document.createElement('script');
-      s.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(
-        V3_SITE_KEY
-      )}`;
-      s.async = true;
-      s.defer = true;
-      s.setAttribute('data-recaptcha-v3', 'true');
-      s.onload = () => resolve();
-      s.onerror = () => reject(new Error('Failed to load reCAPTCHA'));
-
-      document.head.appendChild(s);
-    });
-  };
-
-  const ensureRecaptchaBadgeStyle = () => {
-    if (!isV3) return;
-
-    const existingStyle = document.querySelector<HTMLStyleElement>(
-      'style[data-recaptcha-badge-style="true"]'
-    );
-
-    if (existingStyle) return;
-
-    const style = document.createElement('style');
-    style.setAttribute('data-recaptcha-badge-style', 'true');
-    style.textContent = `
-      .grecaptcha-badge {
-        visibility: hidden !important;
-      }
-    `;
-
-    document.head.appendChild(style);
-  };
-
-  const getV3Token = async () => {
-    if (!V3_SITE_KEY) return null;
-
-    await ensureRecaptchaV3Script();
-
-    if (!window.grecaptcha) return null;
-
-    return await new Promise<string | null>((resolve) => {
-      window.grecaptcha!.ready(async () => {
-        try {
-          const token = await window.grecaptcha!.execute(V3_SITE_KEY, {
-            action: 'contact_submit',
-          });
-
-          resolve(token);
-        } catch {
-          resolve(null);
-        }
-      });
-    });
-  };
-
-  useEffect(() => {
-    if (isV3) {
-      ensureRecaptchaBadgeStyle();
-
-      ensureRecaptchaV3Script().catch(() => {
-        // handled on submit
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isV3]);
 
   useEffect(() => {
     if (error) {
@@ -246,7 +162,6 @@ const Contact: React.FC = () => {
       message: '',
     });
 
-    setCaptchaToken(null);
     setError(null);
     setFieldErrors({});
     setSubmitted(false);
@@ -282,37 +197,11 @@ const Contact: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      let tokenToSend: string | null = captchaToken;
-
-      if (isV3) {
-        tokenToSend = await getV3Token();
-      } else if (isV2) {
-        tokenToSend = captchaToken;
-      }
-
-      if (!tokenToSend) {
-        const msg = isV3
-          ? 'Security verification could not be completed. Please refresh the page and try again.'
-          : isV2
-            ? 'Please complete reCAPTCHA before sending.'
-            : 'reCAPTCHA is not configured. Set VITE_RECAPTCHA_V3_SITE_KEY preferred or VITE_RECAPTCHA_SITE_KEY.';
-
-        setError(msg);
-
-        track('contact_submit_error', {
-          event_category: 'Contact',
-          event_label: 'recaptcha_verification_error',
-        });
-
-        return;
-      }
-
       const res = await axios.post(`${API_BASE_URL}/api/contact`, {
         name: formData.name,
         email: formData.email,
         phone: formData.phone || undefined,
         message: formData.message,
-        token: tokenToSend,
       });
 
       if (res.data?.success) {
@@ -325,7 +214,6 @@ const Contact: React.FC = () => {
           message: '',
         });
 
-        setCaptchaToken(null);
         setFieldErrors({});
 
         track('form_submit', {
@@ -781,25 +669,6 @@ const Contact: React.FC = () => {
                     />
                   </label>
 
-                  {!isV3 && (
-                    <div className="pt-1.5">
-                      {isV2 ? (
-                        <ReCAPTCHA
-                          sitekey={V2_SITE_KEY!}
-                          onChange={(t) =>
-                            setCaptchaToken(t)
-                          }
-                        />
-                      ) : (
-                        <p className="text-xs text-red-600">
-                          reCAPTCHA is not configured. Set
-                          VITE_RECAPTCHA_V3_SITE_KEY preferred or
-                          VITE_RECAPTCHA_SITE_KEY.
-                        </p>
-                      )}
-                    </div>
-                  )}
-
                   <div className="pt-2 flex flex-col sm:flex-row sm:flex-wrap gap-3">
                     <button
                       type="submit"
@@ -822,44 +691,6 @@ const Contact: React.FC = () => {
                       RESET
                     </button>
                   </div>
-
-                  {isV3 && (
-                    <p className="text-[11px] leading-relaxed text-[#1f2937]/45">
-                      This site is protected by reCAPTCHA and the Google{' '}
-                      <a
-                        href="https://policies.google.com/privacy"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="
-                          underline underline-offset-2
-                          hover:text-[#0f5028]
-                          focus:outline-none
-                          focus-visible:ring-2
-                          focus-visible:ring-[#0f5028]/25
-                          rounded-sm
-                        "
-                      >
-                        Privacy Policy
-                      </a>{' '}
-                      and{' '}
-                      <a
-                        href="https://policies.google.com/terms"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="
-                          underline underline-offset-2
-                          hover:text-[#0f5028]
-                          focus:outline-none
-                          focus-visible:ring-2
-                          focus-visible:ring-[#0f5028]/25
-                          rounded-sm
-                        "
-                      >
-                        Terms of Service
-                      </a>{' '}
-                      apply.
-                    </p>
-                  )}
 
                   <p className="text-xs text-[#1f2937]/65 leading-relaxed">
                     Please do not include highly sensitive personal information.
