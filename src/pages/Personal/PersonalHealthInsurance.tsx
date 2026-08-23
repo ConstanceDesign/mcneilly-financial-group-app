@@ -1,5 +1,3 @@
-health
-
 import React from 'react';
 import {
   FaHeartbeat,

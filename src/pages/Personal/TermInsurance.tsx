@@ -1,5 +1,3 @@
-term
-
 import React from 'react';
 import {
   FaHourglassHalf,

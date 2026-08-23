@@ -1,5 +1,3 @@
-mortgage
-
 import React from 'react';
 import {
   FaHome,

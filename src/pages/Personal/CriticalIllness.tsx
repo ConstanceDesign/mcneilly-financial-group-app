@@ -1,6 +1,3 @@
-critical
-
-
 import React from 'react';
 import {
   FaStethoscope,

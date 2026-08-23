@@ -1,5 +1,3 @@
-permanent
-
 import React from 'react';
 import {
   FaTree,

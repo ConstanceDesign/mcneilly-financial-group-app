@@ -1,5 +1,3 @@
-disability
-
 import React from 'react';
 import {
   FaWheelchair,
