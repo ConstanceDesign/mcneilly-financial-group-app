@@ -102,7 +102,7 @@ const MortgageInsurance: React.FC = () => (
     </div>
 
     {/* Right Column – Term Option */}
-    <div className="w-full lg:w-1/2 min-w-0 space-y-5">
+    <div className="w-full lg:w-1/2 min-w-0 space-y-4 lg:space-y-5">
       <h2
         className="
           font-sans
@@ -136,11 +136,28 @@ const MortgageInsurance: React.FC = () => (
         ))}
       </ul>
 
-      <p className="leading-[1.65]">
-        Choosing the right mortgage protection strategy can make a lasting difference in your
-        family&apos;s financial security. We can help you compare options and make an informed
-        choice that balances flexibility, cost, and control.
-      </p>
+      <div className="pt-3 lg:pt-4 border-t border-[#d4d4d4]">
+        <h3
+          className="
+            font-sans
+            text-xl
+            font-semibold
+            tracking-tight
+            leading-[1.2]
+            text-[#0f5028]
+            mb-2
+            lg:mb-3
+          "
+        >
+          Choosing the right approach
+        </h3>
+
+        <p className="leading-[1.65]">
+          Choosing the right mortgage protection strategy can make a lasting difference in your
+          family&apos;s financial security. We can help you compare options and make an informed
+          choice that balances flexibility, cost, and control.
+        </p>
+      </div>
     </div>
   </section>
 );

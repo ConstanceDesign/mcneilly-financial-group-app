@@ -7,10 +7,6 @@ import {
 } from 'react-icons/fa';
 import Reveal from '../../components/motion/Reveal';
 
-const Divider = () => (
-  <div className="my-12 h-px bg-black/5" aria-hidden="true" />
-);
-
 const card =
   'rounded-xl border border-black/10 bg-white/45 backdrop-blur-[2px] shadow-sm';
 
@@ -30,11 +26,19 @@ const DisabilityInsurance: React.FC = () => {
       aria-labelledby="disability-insurance-heading"
       className="text-[#333333]"
     >
+      {/* TOP MODULE */}
       <Reveal
         variant="up"
-        className="grid gap-10 lg:grid-cols-12 lg:gap-14"
+        className={`
+          ${card}
+          p-5 sm:p-6 lg:p-7
+          grid gap-8
+          lg:grid-cols-12
+          lg:gap-12
+          items-start
+        `}
       >
-        <div className="lg:col-span-7 space-y-5">
+        <div className="lg:col-span-7">
           {/* PRIMARY PAGE HEADING */}
           <div className="flex items-start gap-3 mb-3">
             <span
@@ -71,17 +75,19 @@ const DisabilityInsurance: React.FC = () => {
             </h2>
           </div>
 
-          <p className="leading-relaxed">
-            Disability insurance provides income protection if illness or injury prevents you from working. It helps
-            keep essential obligations covered while you focus on recovery.
-          </p>
+          <div className="space-y-5">
+            <p className="leading-relaxed">
+              Disability insurance provides income protection if illness or injury prevents you from working. It helps
+              keep essential obligations covered while you focus on recovery.
+            </p>
 
-          <p className="leading-relaxed">
-            Policies can differ by definition of disability (own occupation vs. any occupation), elimination period,
-            benefit duration, and optional features like residual (partial) disability benefits.
-          </p>
+            <p className="leading-relaxed">
+              Policies can differ by definition of disability (own occupation vs. any occupation), elimination period,
+              benefit duration, and optional features like residual (partial) disability benefits.
+            </p>
+          </div>
 
-          <div className="pt-4 border-t border-[#d4d4d4]">
+          <div className="mt-7">
             <h3
               className="
                 font-sans
@@ -114,7 +120,7 @@ const DisabilityInsurance: React.FC = () => {
           </div>
         </div>
 
-        <div className="lg:col-span-5 space-y-5">
+        <div className="lg:col-span-5">
           <Reveal
             variant="scale"
             className={`${softCard} p-5`}
@@ -138,11 +144,18 @@ const DisabilityInsurance: React.FC = () => {
         </div>
       </Reveal>
 
-      <Divider />
-
+      {/* MIDDLE MODULE */}
       <Reveal
         variant="left"
-        className="grid gap-10 lg:grid-cols-12 lg:gap-14"
+        className={`
+          ${card}
+          mt-5
+          p-5 sm:p-6 lg:p-7
+          grid gap-8
+          lg:grid-cols-12
+          lg:gap-12
+          items-center
+        `}
       >
         <div className="lg:col-span-7">
           <h3
@@ -159,15 +172,15 @@ const DisabilityInsurance: React.FC = () => {
             Disability risk by age
           </h3>
 
-          <p className="leading-relaxed">
+          <p className="leading-relaxed max-w-[58ch]">
             The table below shows the percentage of males and females who may experience a disability lasting 90 days
             or more before age 65. It’s a reminder that risk exists across every stage of working life.
           </p>
         </div>
 
         <div className="lg:col-span-5">
-          <div className={`${card} bg-white/70`}>
-            <div className="overflow-x-auto rounded-xl">
+          <div className="rounded-xl border border-black/10 bg-white/70 shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
               <table className="min-w-full text-sm text-left">
                 <caption className="sr-only">
                   Disability risk by age, showing male and female percentages.
@@ -175,13 +188,24 @@ const DisabilityInsurance: React.FC = () => {
 
                 <thead className="bg-[#0f5028] text-white">
                   <tr>
-                    <th scope="col" className="py-2.5 px-4 font-semibold uppercase tracking-wide text-xs">
+                    <th
+                      scope="col"
+                      className="py-2.5 px-4 font-semibold uppercase tracking-wide text-xs"
+                    >
                       Age
                     </th>
-                    <th scope="col" className="py-2.5 px-4 font-semibold uppercase tracking-wide text-xs">
+
+                    <th
+                      scope="col"
+                      className="py-2.5 px-4 font-semibold uppercase tracking-wide text-xs"
+                    >
                       Male (%)
                     </th>
-                    <th scope="col" className="py-2.5 px-4 font-semibold uppercase tracking-wide text-xs">
+
+                    <th
+                      scope="col"
+                      className="py-2.5 px-4 font-semibold uppercase tracking-wide text-xs"
+                    >
                       Female (%)
                     </th>
                   </tr>
@@ -189,12 +213,24 @@ const DisabilityInsurance: React.FC = () => {
 
                 <tbody className="divide-y divide-black/5">
                   {riskRows.map((row) => (
-                    <tr key={row.age} className="odd:bg-white even:bg-black/[0.02]">
-                      <th scope="row" className="py-2.5 px-4 font-semibold text-[#0f5028]">
+                    <tr
+                      key={row.age}
+                      className="odd:bg-white even:bg-black/[0.02]"
+                    >
+                      <th
+                        scope="row"
+                        className="py-2.5 px-4 font-semibold text-[#0f5028]"
+                      >
                         {row.age}
                       </th>
-                      <td className="py-2.5 px-4 text-[#1f2937]/80">{row.male}</td>
-                      <td className="py-2.5 px-4 text-[#1f2937]/80">{row.female}</td>
+
+                      <td className="py-2.5 px-4 text-[#1f2937]/80">
+                        {row.male}
+                      </td>
+
+                      <td className="py-2.5 px-4 text-[#1f2937]/80">
+                        {row.female}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -206,6 +242,7 @@ const DisabilityInsurance: React.FC = () => {
                 className="mt-0.5 h-4 w-4 shrink-0 text-[#2f7a2e]"
                 aria-hidden="true"
               />
+
               <span>
                 Source: 1985 Commissioner&apos;s Disability Table A &amp; CIA 86–92 Aggregate Mortality Table.
                 Illustration only; may not reflect current experience.
@@ -215,9 +252,11 @@ const DisabilityInsurance: React.FC = () => {
         </div>
       </Reveal>
 
-      <Divider />
-
-      <Reveal variant="softUp">
+      {/* BOTTOM MODULE */}
+      <Reveal
+        variant="softUp"
+        className={`${card} mt-5 p-5 sm:p-6 lg:p-7`}
+      >
         <h3
           className="
             font-sans
@@ -226,7 +265,6 @@ const DisabilityInsurance: React.FC = () => {
             tracking-tight
             leading-tight
             text-[#0f5028]
-            mb-4
           "
         >
           What to review when comparing policies
@@ -264,12 +302,17 @@ const DisabilityInsurance: React.FC = () => {
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.45, ease: 'easeOut', delay: i * 0.04 }}
+              transition={{
+                duration: 0.45,
+                ease: 'easeOut',
+                delay: i * 0.04,
+              }}
               className={`${card} p-5`}
             >
               <p className="text-xs font-semibold uppercase tracking-widest text-[#0f5028]/70">
                 {x.t}
               </p>
+
               <p className="mt-3 text-sm text-[#1f2937]/70 leading-relaxed">
                 {x.b}
               </p>
