@@ -1,36 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import axios from 'axios';
+import React, { useMemo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import {
-  FaEnvelope,
-  FaUndo,
-  FaCheckCircle,
-  FaMapMarkerAlt,
-} from 'react-icons/fa';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 import heroDesktop from '../images/contact-hero-desktop.jpg';
 import heroTablet from '../images/contact-hero-tablet.jpg';
 import heroMobile from '../images/contact-hero-mobile.jpg';
 
-declare global {
-  interface Window {
-    gtag?: (...args: any[]) => void;
-  }
-}
-
-type FieldKey = 'name' | 'email' | 'phone' | 'message';
-type FieldErrors = Partial<Record<FieldKey, string>>;
-
 const Contact: React.FC = () => {
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
-    ? String(import.meta.env.VITE_API_BASE_URL)
-    : import.meta.env.DEV
-      ? 'http://localhost:5000'
-      : '';
-
-  const OFFICE_EMAIL =
-    (import.meta.env.VITE_OFFICE_EMAIL as string | undefined) ||
-    'pmcneilly@mcneillyfinancialgroup.ca';
-
   const OFFICE_FAX =
     (import.meta.env.VITE_OFFICE_FAX as string | undefined) ||
     '(519) 979 5432';
@@ -42,24 +17,6 @@ const Contact: React.FC = () => {
   const OFFICE_PHONE_TEL = '+15199795396';
   const OFFICE_FAX_TEL = '+15199795432';
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-
-  const alertRef = useRef<HTMLDivElement>(null);
-  const nameRef = useRef<HTMLInputElement | null>(null);
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const phoneRef = useRef<HTMLInputElement | null>(null);
-  const messageRef = useRef<HTMLTextAreaElement | null>(null);
-
   const today = useMemo(() => {
     const d = new Date();
 
@@ -69,175 +26,6 @@ const Contact: React.FC = () => {
       day: '2-digit',
     });
   }, []);
-
-  const track = (event: string, params?: Record<string, any>) => {
-    try {
-      window.gtag?.('event', event, params || {});
-    } catch {
-      // no-op
-    }
-  };
-
-  useEffect(() => {
-    if (error) {
-      setTimeout(() => alertRef.current?.focus(), 0);
-    }
-  }, [error]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    const key = name as FieldKey;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    setError(null);
-
-    setFieldErrors((prev) => {
-      if (!prev[key]) return prev;
-
-      const next = { ...prev };
-      delete next[key];
-
-      return next;
-    });
-
-    setSubmitted(false);
-  };
-
-  const validate = () => {
-    const errs: FieldErrors = {};
-
-    if (!formData.name.trim()) {
-      errs.name = 'Please enter your name.';
-    }
-
-    if (!formData.email.trim()) {
-      errs.email = 'Please enter your email.';
-    }
-
-    if (!formData.message.trim()) {
-      errs.message = 'Please enter a message.';
-    }
-
-    const firstKey =
-      (Object.keys(errs)[0] as FieldKey | undefined) || null;
-
-    const focusFirst = () => {
-      if (!firstKey) return;
-
-      if (firstKey === 'name') {
-        nameRef.current?.focus();
-      }
-
-      if (firstKey === 'email') {
-        emailRef.current?.focus();
-      }
-
-      if (firstKey === 'phone') {
-        phoneRef.current?.focus();
-      }
-
-      if (firstKey === 'message') {
-        messageRef.current?.focus();
-      }
-    };
-
-    return {
-      errs,
-      firstKey,
-      focusFirst,
-    };
-  };
-
-  const handleReset = () => {
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      message: '',
-    });
-
-    setError(null);
-    setFieldErrors({});
-    setSubmitted(false);
-
-    track('contact_reset', {
-      event_category: 'Contact',
-      event_label: 'Reset',
-    });
-
-    setTimeout(() => nameRef.current?.focus(), 0);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const { errs, firstKey, focusFirst } = validate();
-
-    if (firstKey) {
-      setFieldErrors(errs);
-      setError(errs[firstKey] || 'Please check the form.');
-
-      track('contact_submit_error', {
-        event_category: 'Contact',
-        event_label: errs[firstKey] || 'validation_error',
-      });
-
-      setTimeout(() => focusFirst(), 0);
-
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      const res = await axios.post(`${API_BASE_URL}/api/contact`, {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone || undefined,
-        message: formData.message,
-      });
-
-      if (res.data?.success) {
-        setSubmitted(true);
-
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          message: '',
-        });
-
-        setFieldErrors({});
-
-        track('form_submit', {
-          event_category: 'Contact',
-          event_label: 'Contact Form Submission',
-        });
-
-        setTimeout(() => alertRef.current?.focus(), 0);
-      } else {
-        setError('Unable to send your message. Please try again.');
-      }
-    } catch (err: any) {
-      console.error(err);
-
-      const msg =
-        err?.response?.data?.message ||
-        err?.response?.data?.error ||
-        'Something went wrong. Please try again later.';
-
-      setError(msg);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const reduceMotion = useReducedMotion();
 
@@ -297,36 +85,6 @@ const Contact: React.FC = () => {
   const label =
     'block text-[15px] font-semibold tracking-[0.01em] text-[#0f5028]';
 
-  const input =
-    'mt-1 w-full rounded-xs border border-black/20 bg-white/90 px-3 py-2.5 ' +
-    'text-[16px] text-[#1f2937] placeholder:text-[#1f2937]/55 ' +
-    'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0f5028]/25 ' +
-    'focus-visible:border-[#0f5028]/25 ' +
-    'focus-visible:shadow-[0_0_0_3px_rgba(47,122,46,0.08)]';
-
-  const inputError =
-    'border-red-400 focus-visible:ring-red-200/60 focus-visible:border-red-300';
-
-  const primaryBtn =
-    'btn inline-flex items-center justify-center gap-2 ' +
-    'px-4 py-2 rounded-xs ' +
-    'bg-[#2f7a2e] hover:bg-[#3a8b34] ' +
-    'text-white text-sm font-bold uppercase tracking-wide ' +
-    'shadow-sm hover:shadow-md transition ' +
-    'hover:shadow-[0_10px_22px_rgba(15,80,40,0.18)] ' +
-    'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0f5028]/25 ' +
-    'disabled:opacity-50 disabled:cursor-not-allowed';
-
-  const secondaryBtn =
-    'btn inline-flex items-center justify-center gap-2 ' +
-    'px-4 py-2 rounded-xs ' +
-    'bg-white/70 hover:bg-white/90 ' +
-    'border border-black/10 ' +
-    'text-[#2f7a2e] text-sm font-bold uppercase tracking-wide ' +
-    'shadow-sm hover:shadow-md transition ' +
-    'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0f5028]/25 ' +
-    'disabled:opacity-50 disabled:cursor-not-allowed';
-
   const mapBtn =
     'btn inline-flex items-center justify-center gap-2 w-full ' +
     'px-4 py-3 rounded-xs ' +
@@ -345,8 +103,16 @@ const Contact: React.FC = () => {
   const appleMapsUrl =
     `https://maps.apple.com/?daddr=${destinationEncoded}`;
 
+  /*
+    HYBRID VIEW:
+    t=h gives the aerial/satellite imagery with road/place labels,
+    matching the Google Maps version shown in your screenshot.
+  */
+  const googleMapEmbedUrl =
+    `https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=${destinationEncoded}&t=h&z=16&output=embed`;
+
   return (
-    <div className={`min-h-screen ${pageBg} text-[#1f2937] font-inter`}>
+    <div className={`${pageBg} text-[#1f2937] font-inter`}>
       <section aria-label="Contact page hero" className="relative">
         {/* DESKTOP / TABLET HERO — UNCHANGED */}
         <div className="relative overflow-hidden hidden sm:block">
@@ -402,6 +168,7 @@ const Contact: React.FC = () => {
                     <h1 className="mt-2.5 sm:mt-3 font-sans font-medium tracking-tight text-[#102019] leading-[1.05] text-[2.05rem] sm:text-5xl lg:text-6xl">
                       Let&apos;s Talk About
                       <br />
+
                       <span className="whitespace-nowrap">
                         Your Financial Plan
                       </span>
@@ -427,7 +194,6 @@ const Contact: React.FC = () => {
 
         {/* MOBILE HERO */}
         <div className="sm:hidden bg-[#f4f2ec]">
-          {/* EYEBROW + HEADLINE — ALIGNED WITH LOGO */}
           <div className="px-9 pt-5">
             <p className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#0f5028]">
               Consultation • Planning • Protection
@@ -440,7 +206,6 @@ const Contact: React.FC = () => {
             </h1>
           </div>
 
-          {/* FULL-BLEED MOBILE IMAGE */}
           <figure className="relative mt-5 w-full overflow-hidden">
             <img
               src={heroMobile}
@@ -458,7 +223,6 @@ const Contact: React.FC = () => {
               "
             />
 
-            {/* MATCHING SOFT FILTER */}
             <div
               aria-hidden="true"
               className="
@@ -469,7 +233,6 @@ const Contact: React.FC = () => {
             />
           </figure>
 
-          {/* SUPPORTING PARAGRAPH — SAME LEFT EDGE */}
           <div className="px-9">
             <p className="mt-4 pb-8 text-[15px] text-[#1f2937]/80 leading-[1.65] max-w-[52ch]">
               Clear, conservative guidance for retirement, insurance, and
@@ -482,9 +245,14 @@ const Contact: React.FC = () => {
       </section>
 
       <main
-        id="main-content"
-        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
+  id="main-content"
+  className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
       >
+
+        <main
+  id="main-content"
+  className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
+></main>
         <div
           className="
             -mt-14 sm:-mt-16 lg:-mt-20
@@ -494,319 +262,161 @@ const Contact: React.FC = () => {
             backdrop-blur-md
             shadow-[0_22px_70px_rgba(0,0,0,0.10)]
             p-5 sm:p-6 lg:p-7
+            xl:max-w-5xl xl:mx-auto
           "
         >
           <motion.section
             {...cardIn}
-            className="grid gap-5 lg:gap-6 xl:grid-cols-12 items-stretch"
+            className="grid gap-5 lg:gap-6"
           >
             <motion.article
               {...colIn(0)}
-              className={`${softCard} xl:col-span-7`}
+              className={`${softCard} mx-auto w-full`}
             >
-              <header>
-                <h2 className={h2}>
-                  Start a conversation
-                </h2>
+              <div
+                className="
+                  grid
+                  gap-6
+                  md:grid-cols-12
+                  md:gap-5
+                  lg:gap-7
+                  xl:gap-8
+                  md:items-stretch
+                "
+              >
+                {/* LEFT COLUMN */}
+                <div className="md:col-span-5 flex flex-col">
+                  <header>
+                    <h2 className={h2}>
+                      Call or visit our office
+                    </h2>
 
-                <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
-                  We reply personally within one business day.
-                </p>
-              </header>
+                    <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
+                      Appointments by request.
+                    </p>
+                  </header>
 
-              <div className="mt-4 h-px w-full bg-black/10" />
+                  {/* LEFT COLUMN DIVIDER ONLY */}
+                  <div className="mt-4 h-px w-full bg-black/10" />
 
-              {(error || submitted) && (
-                <div
-                  ref={alertRef}
-                  tabIndex={-1}
-                  role="status"
-                  aria-live="polite"
-                  className={`mt-4 rounded-xl border p-4 outline-none ${
-                    error
-                      ? 'border-red-300 bg-red-50 text-red-800'
-                      : 'border-[#0f5028]/25 bg-white/70 text-[#0f5028]'
-                  }`}
-                >
-                  <div className="flex items-start gap-2.5">
-                    <FaCheckCircle
-                      className={`mt-1 text-sm ${
-                        error
-                          ? 'text-red-600'
-                          : 'text-[#2f7a2e]'
-                      }`}
-                      aria-hidden="true"
-                    />
-
-                    <div className="text-sm md:text-base font-medium leading-relaxed">
-                      {error
-                        ? error
-                        : 'Thank you, your message has been sent.'}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {submitted ? (
-                <div className="mt-5">
-                  <div className="rounded-xl border border-[#0f5028]/20 bg-white/70 p-4">
-                    <p className="text-[#0f5028] font-semibold">
-                      Message sent.
+                  <div className="mt-5 text-[15px] sm:text-[16px] text-[#1f2937]/80 leading-relaxed">
+                    <p className="font-semibold text-lg text-[#0f5028]">
+                      McNeilly Financial Group
                     </p>
 
-                    <div className="mt-4">
-                      <button
-                        type="button"
-                        onClick={handleReset}
-                        className={secondaryBtn}
-                      >
-                        <FaUndo aria-hidden="true" />
-                        SEND ANOTHER
-                      </button>
+                    <p className="mt-2">
+                      1608 Sylvestre Drive, Suite 2D
+                    </p>
+
+                    <p>
+                      Tecumseh, Ontario N8N 2L9
+                    </p>
+
+                    <div className="mt-5 space-y-4">
+                      <div>
+                        <span className={label}>
+                          Phone
+                        </span>
+
+                        <a
+                          href={`tel:${OFFICE_PHONE_TEL}`}
+                          className="block underline underline-offset-4"
+                        >
+                          {OFFICE_PHONE}
+                        </a>
+                      </div>
+
+                      <div>
+                        <span className={label}>
+                          Fax
+                        </span>
+
+                        <a
+                          href={`tel:${OFFICE_FAX_TEL}`}
+                          className="block underline underline-offset-4"
+                        >
+                          {OFFICE_FAX}
+                        </a>
+                      </div>
+
+                      <div>
+                        <span className={label}>
+                          Hours
+                        </span>
+
+                        <span className="block">
+                          Monday–Friday, 9:00 AM – 5:00 PM
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              ) : (
-                <form
-                  onSubmit={handleSubmit}
-                  className="space-y-3.5 print:hidden mt-5"
-                  noValidate
-                >
-                  <label className="block">
-                    <span className={label}>
-                      Name
-                    </span>
 
-                    <input
-                      ref={nameRef}
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      autoComplete="name"
-                      className={`${input} ${
-                        fieldErrors.name
-                          ? inputError
-                          : ''
-                      }`}
-                      placeholder="Your full name"
-                      required
-                      aria-required="true"
-                      aria-invalid={Boolean(fieldErrors.name)}
-                      disabled={loading}
-                    />
-                  </label>
-
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5">
-                    <label className="block md:col-span-8">
-                      <span className={label}>
-                        Email
-                      </span>
-
-                      <input
-                        ref={emailRef}
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        autoComplete="email"
-                        className={`${input} ${
-                          fieldErrors.email
-                            ? inputError
-                            : ''
-                        }`}
-                        placeholder="you@example.com"
-                        required
-                        aria-required="true"
-                        aria-invalid={Boolean(fieldErrors.email)}
-                        disabled={loading}
-                      />
-                    </label>
-
-                    <label className="block md:col-span-4">
-                      <span className={label}>
-                        Phone{' '}
-                        <span className="text-xs font-normal text-[#1f2937]/55">
-                          (optional)
-                        </span>
-                      </span>
-
-                      <input
-                        ref={phoneRef}
-                        name="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        autoComplete="tel"
-                        inputMode="tel"
-                        className={input}
-                        placeholder="(519) 123-4567"
-                        disabled={loading}
-                      />
-                    </label>
-                  </div>
-
-                  <label className="block">
-                    <span className={label}>
-                      Message
-                    </span>
-
-                    <textarea
-                      ref={messageRef}
-                      name="message"
-                      rows={5}
-                      value={formData.message}
-                      onChange={handleChange}
-                      className={`${input} ${
-                        fieldErrors.message
-                          ? inputError
-                          : ''
-                      } resize-y`}
-                      placeholder="Tell us a bit about your goals or questions."
-                      required
-                      aria-required="true"
-                      aria-invalid={Boolean(fieldErrors.message)}
-                      disabled={loading}
-                    />
-                  </label>
-
-                  <div className="pt-2 flex flex-col sm:flex-row sm:flex-wrap gap-3">
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className={primaryBtn}
-                    >
-                      <FaEnvelope aria-hidden="true" />
-                      {loading
-                        ? 'SENDING…'
-                        : 'SEND MESSAGE'}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleReset}
-                      className={secondaryBtn}
-                      disabled={loading}
-                    >
-                      <FaUndo aria-hidden="true" />
-                      RESET
-                    </button>
-                  </div>
-
-                  <p className="text-xs text-[#1f2937]/65 leading-relaxed">
-                    Please do not include highly sensitive personal information.
-                    We will confirm the most secure way to share details during
-                    follow-up. Contact information is used solely to respond to
-                    your inquiry and is not used for marketing or solicitation
-                    purposes.
-                  </p>
-                </form>
-              )}
-            </motion.article>
-
-            <motion.article
-              {...colIn(0.06)}
-              className={`${softCard} xl:col-span-5`}
-            >
-              <header>
-                <h2 className={h2}>
-                  Call or visit our office
-                </h2>
-
-                <p className="mt-2 text-[15px] sm:text-[16px] text-[#1f2937]/75 leading-relaxed">
-                  Appointments by request.
-                </p>
-              </header>
-
-              <div className="mt-4 h-px w-full bg-black/10" />
-
-              <div className="mt-5 text-[15px] sm:text-[16px] text-[#1f2937]/80 leading-relaxed">
-                <p className="font-semibold text-lg text-[#0f5028]">
-                  McNeilly Financial Group
-                </p>
-
-                <p className="mt-2">
-                  1608 Sylvestre Drive, Suite 2D
-                </p>
-
-                <p>
-                  Tecumseh, Ontario N8N 2L9
-                </p>
-
-                <div className="mt-5 space-y-4">
-                  <div>
-                    <span className={label}>
-                      Phone
-                    </span>
-
-                    <a
-                      href={`tel:${OFFICE_PHONE_TEL}`}
-                      className="block underline underline-offset-4"
-                    >
-                      {OFFICE_PHONE}
-                    </a>
-                  </div>
-
-                  <div>
-                    <span className={label}>
-                      Fax
-                    </span>
-
-                    <a
-                      href={`tel:${OFFICE_FAX_TEL}`}
-                      className="block underline underline-offset-4"
-                    >
-                      {OFFICE_FAX}
-                    </a>
-                  </div>
-
-                  <div>
-                    <span className={label}>
-                      Email
-                    </span>
-
-                    <a
-                      href={
-                        OFFICE_EMAIL.startsWith('REPLACE_')
-                          ? undefined
-                          : `mailto:${OFFICE_EMAIL}`
-                      }
-                      className="block break-words underline underline-offset-4"
-                    >
-                      {OFFICE_EMAIL}
-                    </a>
-                  </div>
-
-                  <div>
-                    <span className={label}>
-                      Hours
-                    </span>
-
-                    <span className="block">
-                      Monday–Friday, 9:00 AM – 5:00 PM
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-6 space-y-3">
-                  <a
-                    href={googleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={mapBtn}
+                {/* RIGHT COLUMN */}
+                <div className="md:col-span-7 flex flex-col">
+                  {/* GOOGLE HYBRID MAP */}
+                  <div
+                    className="
+                      overflow-hidden
+                      rounded-xl
+                      border border-black/10
+                      bg-white/70
+                      shadow-sm
+                      md:flex-1
+                    "
                   >
-                    <FaMapMarkerAlt aria-hidden="true" />
-                    OPEN IN GOOGLE MAPS
-                  </a>
+                    <iframe
+                      title="McNeilly Financial Group office location"
+                      src={googleMapEmbedUrl}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="
+                        block
+                        w-full
+                        h-[260px]
 
-                  <a
-                    href={appleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={mapBtn}
+                        md:h-full
+                        md:min-h-[190px]
+
+                        lg:min-h-[220px]
+
+                        xl:min-h-[240px]
+
+                        border-0
+                      "
+                    />
+                  </div>
+
+                  {/* MAP BUTTONS */}
+                  <div
+                    className="
+                      mt-3
+                      grid
+                      grid-cols-1
+                      gap-3
+                      xl:grid-cols-2
+                    "
                   >
-                    <FaMapMarkerAlt aria-hidden="true" />
-                    OPEN IN APPLE MAPS
-                  </a>
+                    <a
+                      href={googleMapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={mapBtn}
+                    >
+                      <FaMapMarkerAlt aria-hidden="true" />
+                      OPEN IN GOOGLE MAPS
+                    </a>
+
+                    <a
+                      href={appleMapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={mapBtn}
+                    >
+                      <FaMapMarkerAlt aria-hidden="true" />
+                      OPEN IN APPLE MAPS
+                    </a>
+                  </div>
                 </div>
               </div>
             </motion.article>
