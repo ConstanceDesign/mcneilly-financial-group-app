@@ -245,14 +245,9 @@ const Contact: React.FC = () => {
       </section>
 
       <main
-  id="main-content"
-  className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
+        id="main-content"
+        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
       >
-
-        <main
-  id="main-content"
-  className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
-></main>
         <div
           className="
             -mt-14 sm:-mt-16 lg:-mt-20

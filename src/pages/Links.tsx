@@ -398,7 +398,7 @@ const Links: React.FC = () => {
       <main
         id="main-content"
         tabIndex={-1}
-        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-6 md:pb-8"
+        className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-11 md:pb-13"
       >
         <div
           className="
