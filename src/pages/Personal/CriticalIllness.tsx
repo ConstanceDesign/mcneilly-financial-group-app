@@ -8,7 +8,7 @@ import {
 const CriticalIllness: React.FC = () => (
   <section
     aria-labelledby="critical-illness-heading"
-    className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-start text-[#333333] min-w-0"
+    className="flex flex-col lg:flex-row gap-7 lg:gap-12 items-start text-[#333333] min-w-0"
   >
     {/* Left Column – Overview */}
     <div className="w-full lg:w-1/2 min-w-0 space-y-5">
@@ -62,8 +62,7 @@ const CriticalIllness: React.FC = () => (
         use the benefit.
       </p>
 
-      <div className="pt-4 border-t border-[#d4d4d4]">
-
+      <div className="pt-6 border-t border-[#d4d4d4]">
         <h2
           className="
             font-sans
@@ -110,7 +109,7 @@ const CriticalIllness: React.FC = () => (
     </div>
 
     {/* Right Column – Additional Insights */}
-    <div className="w-full lg:w-1/2 min-w-0 space-y-5">
+    <div className="w-full lg:w-1/2 min-w-0 space-y-5 border-t border-[#d4d4d4] pt-6 lg:border-t-0 lg:pt-0">
       <div className="rounded-xl border border-[#8cbe3f] bg-[#f1f7ea] p-5 shadow-sm">
         <div className="flex items-center gap-2 mb-2">
           <FaLightbulb

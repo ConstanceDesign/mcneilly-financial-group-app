@@ -8,7 +8,7 @@ import {
 const PermanentInsurance: React.FC = () => (
   <section
     aria-labelledby="permanent-insurance-heading"
-    className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-start text-[#333333] min-w-0"
+    className="flex flex-col lg:flex-row gap-7 lg:gap-12 items-start text-[#333333] min-w-0"
   >
     {/* Left Column – Overview */}
     <div className="w-full lg:w-1/2 min-w-0 space-y-5">
@@ -62,7 +62,7 @@ const PermanentInsurance: React.FC = () => (
         retirement.
       </p>
 
-      <div className="pt-4 border-t border-[#d4d4d4]">
+      <div className="pt-6 border-t border-[#d4d4d4]">
         <h2
           className="
             font-sans
@@ -77,7 +77,7 @@ const PermanentInsurance: React.FC = () => (
           Why Choose Permanent Insurance?
         </h2>
 
-        <ul className="space-y-2 mb-4">
+        <ul className="space-y-2 mb-px">
           {[
             'Coverage never expires as long as premiums are paid',
             'Can build tax-advantaged cash value',
@@ -99,7 +99,7 @@ const PermanentInsurance: React.FC = () => (
     </div>
 
     {/* Right Column – Use Cases & Strategy */}
-    <div className="w-full lg:w-1/2 min-w-0 space-y-5">
+    <div className="w-full lg:w-1/2 min-w-0 space-y-5 border-t border-[#d4d4d4] pt-6 lg:border-t-0 lg:pt-0">
       <h2
         className="
           font-sans

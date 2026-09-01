@@ -8,7 +8,7 @@ import {
 const PersonalHealthInsurance: React.FC = () => (
   <section
     aria-labelledby="personal-health-heading"
-    className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-start text-[#333333] min-w-0"
+    className="flex flex-col lg:flex-row gap-7 lg:gap-12 items-start text-[#333333] min-w-0"
   >
     {/* Left Column – Overview */}
     <div className="w-full lg:w-1/2 min-w-0 space-y-5">
@@ -55,7 +55,7 @@ const PersonalHealthInsurance: React.FC = () => (
         offering peace of mind for everyday and unexpected medical expenses.
       </p>
 
-      <div className="pt-4 border-t border-[#d4d4d4]">
+      <div className="pt-6 border-t border-[#d4d4d4]">
         <h2
           className="
             font-sans
@@ -70,7 +70,7 @@ const PersonalHealthInsurance: React.FC = () => (
           Who Needs It?
         </h2>
 
-        <ul className="space-y-2 mb-4">
+        <ul className="space-y-2 mb-px">
           {[
             'Self-employed individuals or contractors without group benefits',
             'Families seeking coverage for prescriptions, dental, and vision',
@@ -91,7 +91,7 @@ const PersonalHealthInsurance: React.FC = () => (
     </div>
 
     {/* Right Column – Coverage & Tips */}
-    <div className="w-full lg:w-1/2 min-w-0 space-y-5">
+    <div className="w-full lg:w-1/2 min-w-0 space-y-5 border-t border-[#d4d4d4] pt-6 lg:border-t-0 lg:pt-0">
       <h2
         className="
           font-sans

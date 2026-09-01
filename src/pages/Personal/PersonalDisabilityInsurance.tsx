@@ -8,7 +8,7 @@ import {
 const PersonalDisabilityInsurance: React.FC = () => (
   <section
     aria-labelledby="personal-disability-heading"
-    className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-start text-[#333333] min-w-0"
+    className="flex flex-col lg:flex-row gap-7 lg:gap-12 items-start text-[#333333] min-w-0"
   >
     {/* Left Column – Overview */}
     <div className="w-full lg:w-1/2 min-w-0 space-y-5">
@@ -55,7 +55,7 @@ const PersonalDisabilityInsurance: React.FC = () => (
         ensures you can continue meeting financial obligations while focusing on your recovery.
       </p>
 
-      <div className="pt-4 border-t border-[#d4d4d4]">
+      <div className="pt-6 border-t border-[#d4d4d4]">
         <h2
           className="
             font-sans
@@ -79,7 +79,7 @@ const PersonalDisabilityInsurance: React.FC = () => (
     </div>
 
     {/* Right Column – Importance & Key Considerations */}
-    <div className="w-full lg:w-1/2 min-w-0 space-y-5">
+    <div className="w-full lg:w-1/2 min-w-0 space-y-5 border-t border-[#d4d4d4] pt-6 lg:border-t-0 lg:pt-0">
       <div>
         <h2
           className="
@@ -114,7 +114,7 @@ const PersonalDisabilityInsurance: React.FC = () => (
         </ul>
       </div>
 
-      <div>
+      <div className="border-t border-[#d4d4d4] pt-6 lg:border-t-0 lg:pt-0">
         <h2
           className="
             font-sans
@@ -129,7 +129,7 @@ const PersonalDisabilityInsurance: React.FC = () => (
           Key Considerations
         </h2>
 
-        <ul className="space-y-2">
+        <ul className="space-y-2 mb-px">
           {[
             'Choose a waiting period that aligns with your emergency savings',
             'Understand benefit duration—some policies cover until age 65',

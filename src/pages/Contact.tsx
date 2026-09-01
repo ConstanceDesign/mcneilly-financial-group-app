@@ -87,9 +87,9 @@ const Contact: React.FC = () => {
 
   const mapBtn =
     'btn inline-flex items-center justify-center gap-2 w-full ' +
-    'px-4 py-3 rounded-xs ' +
+    'px-4 py-3.5 rounded-xs ' +
     'bg-white/70 hover:bg-white/90 ' +
-    'border border-black/10 ' +
+    'border border-[#0f5028]/15 ' +
     'text-[#0f5028] text-sm font-bold uppercase tracking-wide ' +
     'shadow-sm hover:shadow-md transition ' +
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0f5028]/25';
@@ -103,13 +103,8 @@ const Contact: React.FC = () => {
   const appleMapsUrl =
     `https://maps.apple.com/?daddr=${destinationEncoded}`;
 
-  /*
-    HYBRID VIEW:
-    t=h gives the aerial/satellite imagery with road/place labels,
-    matching the Google Maps version shown in your screenshot.
-  */
   const googleMapEmbedUrl =
-    `https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=${destinationEncoded}&t=h&z=16&output=embed`;
+    `https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=${destinationEncoded}&t=h&z=15&output=embed`;
 
   return (
     <div className={`${pageBg} text-[#1f2937] font-inter`}>
@@ -348,7 +343,7 @@ const Contact: React.FC = () => {
                 </div>
 
                 {/* RIGHT COLUMN */}
-                <div className="md:col-span-7 flex flex-col">
+                <div className="md:col-span-7 flex min-w-0 flex-col">
                   {/* GOOGLE HYBRID MAP */}
                   <div
                     className="
@@ -364,18 +359,19 @@ const Contact: React.FC = () => {
                       title="McNeilly Financial Group office location"
                       src={googleMapEmbedUrl}
                       loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
+                      allowFullScreen
+                      referrerPolicy="strict-origin-when-cross-origin"
                       className="
                         block
                         w-full
-                        h-[260px]
+                        h-[300px]
 
                         md:h-full
-                        md:min-h-[190px]
+                        md:min-h-[240px]
 
-                        lg:min-h-[220px]
+                        lg:min-h-[260px]
 
-                        xl:min-h-[240px]
+                        xl:min-h-[280px]
 
                         border-0
                       "
@@ -389,7 +385,7 @@ const Contact: React.FC = () => {
                       grid
                       grid-cols-1
                       gap-3
-                      xl:grid-cols-2
+                      lg:grid-cols-2
                     "
                   >
                     <a

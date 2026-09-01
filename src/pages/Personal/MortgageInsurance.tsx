@@ -7,7 +7,7 @@ import {
 const MortgageInsurance: React.FC = () => (
   <section
     aria-labelledby="mortgage-insurance-heading"
-    className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-start text-[#333333] min-w-0"
+    className="flex flex-col lg:flex-row gap-7 lg:gap-12 items-start text-[#333333] min-w-0"
   >
     {/* Left Column – Overview */}
     <div className="w-full lg:w-1/2 min-w-0 space-y-5">
@@ -60,7 +60,7 @@ const MortgageInsurance: React.FC = () => (
         beneficiaries.
       </p>
 
-      <div className="pt-4 border-t border-[#d4d4d4]">
+      <div className="pt-6 border-t border-[#d4d4d4]">
         <h2
           className="
             font-sans
@@ -75,7 +75,7 @@ const MortgageInsurance: React.FC = () => (
           Bank Mortgage Insurance – Pros &amp; Cons
         </h2>
 
-        <ul className="space-y-2 mb-4">
+        <ul className="space-y-2 mb-px">
           <li className="flex items-start gap-2 min-w-0">
             <FaCheckCircle
               className="mt-1 h-4 w-4 shrink-0 text-[#2f7a2e]"
@@ -102,7 +102,7 @@ const MortgageInsurance: React.FC = () => (
     </div>
 
     {/* Right Column – Term Option */}
-    <div className="w-full lg:w-1/2 min-w-0 space-y-4 lg:space-y-5">
+    <div className="w-full lg:w-1/2 min-w-0 space-y-4 lg:space-y-5 border-t border-[#d4d4d4] pt-6 lg:border-t-0 lg:pt-0">
       <h2
         className="
           font-sans
@@ -117,7 +117,7 @@ const MortgageInsurance: React.FC = () => (
         Personally Owned Term Life Insurance
       </h2>
 
-      <ul className="space-y-2 mb-4">
+      <ul className="space-y-2 mb-6">
         {[
           'You own the policy and name your own beneficiary',
           'Coverage amount stays level and can be tailored to your needs',
@@ -136,7 +136,7 @@ const MortgageInsurance: React.FC = () => (
         ))}
       </ul>
 
-      <div className="pt-3 lg:pt-4 border-t border-[#d4d4d4]">
+      <div className="pt-6 lg:pt-4 border-t border-[#d4d4d4]">
         <h3
           className="
             font-sans
